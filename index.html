@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>Matematika 1 – Množice in Izjave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            background: #f0f0eb;
+            color: #1a2a1a;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            color: #0a2f1f;
+            border-bottom: 3px solid #0a2f1f;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        h2 {
+            color: #0a2f1f;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            color: #0a2f1f;
+            margin-top: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Tema gumbi */
+        .topic-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .topic-btn {
+            background: #0a2f1f;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .topic-btn.active {
+            background: #c7a03b;
+            color: #1a2a1a;
+        }
+
+        /* Teorija */
+        .theory {
+            background: #f9f9f5;
+            padding: 1.5rem;
+            border-left: 4px solid #0a2f1f;
+            margin: 1rem 0;
+            white-space: pre-line;
+        }
+
+        /* Vaje */
+        .exercise {
+            background: #fef9e6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid #eee0b0;
+            border-radius: 0.3rem;
+        }
+
+        .answer-input {
+            width: 100%;
+            padding: 0.5rem;
+            font-family: monospace;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 0.3rem;
+            margin: 0.5rem 0;
+        }
+
+        .feedback {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            display: none;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+        }
+
+        .feedback.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border-left: 4px solid #dc3545;
+        }
+
+        .step-solution {
+            display: none;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #e8f0e8;
+            border-radius: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        button {
+            background: #0a2f1f;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* Kviz */
+        .quiz-question {
+            background: #f0f0f0;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.3rem;
+        }
+
+        .quiz-option {
+            display: block;
+            margin: 0.3rem 0;
+        }
+
+        .complete-btn {
+            background: #0a2f1f;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .complete-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .message {
+            background: #c7a03b;
+            color: #1a2a1a;
+            padding: 0.8rem;
+            text-align: center;
+            border-radius: 0.3rem;
+            margin-top: 1rem;
+        }
+
+        .notes {
+            background: #e8f0e8;
+            padding: 1rem;
+            border-radius: 0.3rem;
+            margin: 1rem 0;
+            white-space: pre-line;
+        }
+
+        hr {
+            margin: 1.5rem 0;
+            border-color: #ddd;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 Matematika 1</h1>
+
+    <!-- Gumbi za izbiro teme -->
+    <div class="topic-buttons">
+        <button class="topic-btn active" data-topic="mnozice">📦 Množice (z neenačbami in intervali)</button>
+        <button class="topic-btn" data-topic="izjave">🧠 Izjave in logika</button>
+    </div>
+
+    <!-- ==================== MNOŽICE ==================== -->
+    <div id="mnozice" class="topic-content">
+        <h2>📦 Množice</h2>
+
+        <div class="theory">
+            <h3>📌 KAJ JE MNOŽICA?</h3>
+            <p>Množica je zbirka različnih stvari. Tem stvarem rečemo <strong>ELEMENTI</strong>.</p>
+            <p>Primer: A = {1, 2, 3} je množica s tremi elementi: 1, 2 in 3.</p>
+
+            <h3>🔤 POMEN SIMBOLOV</h3>
+            <p><strong>∈</strong> = "je element" → 2 ∈ {1,2,3} (drži)</p>
+            <p><strong>∉</strong> = "ni element" → 5 ∉ {1,2,3} (drži)</p>
+            <p><strong>⊂</strong> = "je podmnožica" → {2} ⊂ {1,2,3} (drži)</p>
+            <p><strong>∅</strong> = prazna množica – nima nobenega elementa. Je podmnožica vsake množice.</p>
+
+            <h3>🔗 OPERACIJE Z MNOŽICAMI</h3>
+            <p><strong>A ∪ B</strong> (unija) = vse kar je v A ali v B (ali obeh)</p>
+            <p><strong>A ∩ B</strong> (presek) = samo tisti elementi, ki so v A in v B (skupni)</p>
+            <p><strong>A \ B</strong> (razlika) = elementi v A, ki niso v B</p>
+            <p><strong>A<sup>c</sup></strong> (komplement) = vse razen A (znotraj univerzalne množice U)</p>
+
+            <p><strong>Primer:</strong> A = {1,2,3}, B = {3,4,5}<br>
+            A ∪ B = {1,2,3,4,5}<br>
+            A ∩ B = {3}<br>
+            A \ B = {1,2}</p>
+
+            <h3>📜 DE MORGANOVA ZAKONA</h3>
+            <p>(A ∪ B)<sup>c</sup> = A<sup>c</sup> ∩ B<sup>c</sup></p>
+            <p>(A ∩ B)<sup>c</sup> = A<sup>c</sup> ∪ B<sup>c</sup></p>
+
+            <h3>🔄 KARTEZIČNI PRODUKT</h3>
+            <p>A × B = {(a,b) : a ∈ A, b ∈ B} – vsi možni urejeni pari</p>
+            <p>|A × B| = |A| · |B|</p>
+
+            <hr>
+
+            <h3>📐 INTERVALI (na številski premici)</h3>
+            <p><strong>Interval</strong> je neprekinjen kos številske premice.</p>
+            <p>[2,5] = zaprt (vključno 2 in 5)</p>
+            <p>(2,5) = odprt (brez 2 in 5)</p>
+            <p>(2,5] = polodprt (brez 2, z 5)</p>
+            <p>[2,5) = polodprt (z 2, brez 5)</p>
+            <p>(2,∞) = vsa števila večja od 2</p>
+            <p>(-∞,2] = vsa števila manjša ali enaka 2</p>
+
+            <p><strong>Unija intervalov (∪)</strong> = združitev dveh intervalov.<br>
+            Primer: (-∞, -3) ∪ (7, ∞)</p>
+
+            <hr>
+
+            <h3>⚠️ NEENAČBE (INEQUALITIES)</h3>
+            <p><strong>&lt;</strong> = manjše &nbsp;&nbsp; <strong>&gt;</strong> = večje &nbsp;&nbsp; <strong>≤</strong> = manjše ali enako &nbsp;&nbsp; <strong>≥</strong> = večje ali enako</p>
+
+            <p><strong>Linearna neenačba:</strong> 2x + 3 > 7 → 2x > 4 → x > 2 → rešitev: (2, ∞)</p>
+
+            <p><strong>Kvadratna neenačba:</strong> x² - 4 < 0 → x = -2 ali x = 2 → parabola odprta navzgor → rešitev: (-2, 2)</p>
+
+            <p><strong>Neenačba z absolutno vrednostjo:</strong> |x - 2| < 5 → -5 < x-2 < 5 → -3 < x < 7 → rešitev: (-3, 7)</p>
+
+            <p><strong>Pomembno:</strong> Rešitev neenačbe je VEDNO MNOŽICA (interval ali unija intervalov)!</p>
+        </div>
+
+        <h2>📝 Vaje – Množice</h2>
+        <div id="mnozice-exercises"></div>
+
+        <h2>📊 Kviz – Množice</h2>
+        <div id="mnozice-quiz"></div>
+        <button onclick="submitQuiz('mnozice')">Oddaj kviz</button>
+        <div id="mnozice-quiz-result"></div>
+
+        <button class="complete-btn" id="mnozice-complete-btn" onclick="completeTopic('mnozice')">✅ Označi temo kot opravljeno</button>
+
+        <div class="notes" id="mnozice-notes"></div>
+    </div>
+
+    <!-- ==================== IZJAVE ==================== -->
+    <div id="izjave" class="topic-content hidden">
+        <h2>🧠 Izjave in logika</h2>
+
+        <div class="theory">
+            <h3>📌 KAJ JE IZJAVA?</h3>
+            <p><strong>Izjava</strong> je trditev, ki je lahko <strong>PRAVILNA (P)</strong> ali <strong>NAPAČNA (N)</strong>.</p>
+            <p>Primer: "2 + 2 = 4" je PRAVILNA izjava.</p>
+            <p>Primer: "2 + 2 = 5" je NAPAČNA izjava.</p>
+
+            <h3>🔗 LOGIČNI VEZNIKI</h3>
+            <p><strong>P ∧ Q</strong> (P in Q) – resnično le, če sta obe resnični</p>
+            <p><strong>P ∨ Q</strong> (P ali Q) – resnično, če je vsaj ena resnična</p>
+            <p><strong>P ⇒ Q</strong> (če P potem Q) – napačno le, če je P resničen in Q napačen</p>
+            <p><strong>P ⇔ Q</strong> (P natanko tedaj ko Q) – resnično, ko imata P in Q isto vrednost</p>
+            <p><strong>¬P</strong> (negacija) – nasprotna vrednost</p>
+
+            <p><strong>⚠️ POMEMBNO:</strong> P ⇒ Q je resničen tudi, ko je P napačen!</p>
+
+            <h3>🔍 KVANTIFIKATORJA</h3>
+            <p><strong>∀</strong> (za vsak) – velja za vse elemente</p>
+            <p><strong>∃</strong> (obstaja) – obstaja vsaj en element</p>
+
+            <h3>📜 NEGACIJE KVANTIFIKATORJEV</h3>
+            <p>¬(∀x P(x)) = ∃x ¬P(x)</p>
+            <p>¬(∃x P(x)) = ∀x ¬P(x)</p>
+            <p>¬(P ⇒ Q) = P ∧ ¬Q</p>
+        </div>
+
+        <h2>📝 Vaje – Izjave</h2>
+        <div id="izjave-exercises"></div>
+
+        <h2>📊 Kviz – Izjave</h2>
+        <div id="izjave-quiz"></div>
+        <button onclick="submitQuiz('izjave')">Oddaj kviz</button>
+        <div id="izjave-quiz-result"></div>
+
+        <button class="complete-btn" id="izjave-complete-btn" onclick="completeTopic('izjave')">✅ Označi temo kot opravljeno</button>
+
+        <div class="notes" id="izjave-notes"></div>
+    </div>
+</div>
+
+<script>
+    // ==================== PODATKI ====================
+    const topicsData = {
+        mnozice: {
+            name: 'Množice',
+            completed: localStorage.getItem('mnozice_completed') === 'true',
+            exercises: [
+                { q: 'A = {1,2,3}, B = {3,4,5}. A ∪ B = ?', correct: '{1,2,3,4,5}', answer_display: '{1,2,3,4,5}', steps: 'Unija = vse kar je v A ali B. Elementi: 1,2,3 iz A, 3,4,5 iz B. Skupaj: 1,2,3,4,5.' },
+                { q: 'A = {1,2,3}, B = {3,4,5}. A ∩ B = ?', correct: '{3}', answer_display: '{3}', steps: 'Presek = skupni elementi. Edini skupen element je 3.' },
+                { q: 'Reši: 2x + 1 > 5', correct: 'x>2', answer_display: 'x > 2 ali (2, ∞)', steps: '2x > 4 → x > 2' },
+                { q: 'Reši: |x - 3| < 4', correct: '-1<x<7', answer_display: '(-1, 7)', steps: '|x-3|<4 → -4 < x-3 < 4 → -1 < x < 7' }
+            ],
+            quiz: [
+                { q: 'Kaj pomeni ∈?', options: ['Je podmnožica', 'Je element', 'Unija'], correct: 1 },
+                { q: 'A∩B = ? (A={1,2,3}, B={3,4,5})', options: ['{1,2,3,4,5}', '{3}', '{1,2}'], correct: 1 },
+                { q: 'Reši: x > 3', options: ['(-∞,3)', '(3,∞)', '[3,∞)'], correct: 1 }
+            ],
+            notes: 'Množice: ∈ (element), ⊂ (podmnožica), ∅ (prazna), ∪ (unija), ∩ (presek), \\ (razlika). Intervali: [a,b] zaprt, (a,b) odprt. Neenačbe: rešitev je interval.'
+        },
+        izjave: {
+            name: 'Izjave',
+            completed: localStorage.getItem('izjave_completed') === 'true',
+            exercises: [
+                { q: 'P: 2+2=4 (P), Q: 3+3=7 (N). P ∧ Q = ?', correct: 'N', answer_display: 'N (napačno)', steps: 'Konjunkcija (∧) je resnična le, če sta obe resnični. Q je napačna, zato je P∧Q napačna.' },
+                { q: 'P: 2+2=4 (P), Q: 3+3=7 (N). P ∨ Q = ?', correct: 'P', answer_display: 'P (pravilno)', steps: 'Disjunkcija (∨) je resnična, če je vsaj ena resnična. P je resnična.' },
+                { q: 'Negacija ∀x∈ℝ: x>0', correct: '∃x∈ℝ: x≤0', answer_display: '∃x∈ℝ: x≤0', steps: '¬(∀x P(x)) = ∃x ¬P(x). ¬(x>0) je x≤0.' }
+            ],
+            quiz: [
+                { q: 'P: 2+2=4, Q: 3+3=6. P ∧ Q = ?', options: ['P', 'N', 'Ni izjava'], correct: 0 },
+                { q: 'Negacija ∃x: P(x) je:', options: ['∃x: ¬P(x)', '∀x: ¬P(x)', '∀x: P(x)'], correct: 1 },
+                { q: 'P ⇔ Q je resnična, kadar:', options: ['P in Q različni', 'P in Q enaki', 'P resnična'], correct: 1 }
+            ],
+            notes: 'Izjava = P ali N. ∧ (in), ∨ (ali), ⇒ (če-potem), ⇔ (natanko tedaj), ¬ (ne). ∀ (za vsak), ∃ (obstaja).'
+        }
+    };
+
+    // ==================== RENDER VAJE ====================
+    function renderExercises(topicId) {
+        const container = document.getElementById(`${topicId}-exercises`);
+        const data = topicsData[topicId];
+        if (!container) return;
+
+        let html = '';
+        data.exercises.forEach((ex, idx) => {
+            html += `
+                <div class="exercise" id="ex-${topicId}-${idx}">
+                    <p><strong>${idx+1}.</strong> ${ex.q}</p>
+                    <input type="text" class="answer-input" id="input-${topicId}-${idx}" placeholder="Vpiši odgovor...">
+                    <button onclick="checkAnswer('${topicId}', ${idx})">Preveri</button>
+                    <div class="feedback" id="feedback-${topicId}-${idx}"></div>
+                    <div class="step-solution" id="steps-${topicId}-${idx}"></div>
+                </div>
+            `;
+        });
+        container.innerHTML = html;
+    }
+
+    function renderQuiz(topicId) {
+        const container = document.getElementById(`${topicId}-quiz`);
+        const data = topicsData[topicId];
+        if (!container) return;
+
+        let html = '';
+        data.quiz.forEach((q, idx) => {
+            html += `
+                <div class="quiz-question">
+                    <p><strong>${idx+1}.</strong> ${q.q}</p>
+            `;
+            q.options.forEach((opt, optIdx) => {
+                html += `<label class="quiz-option"><input type="radio" name="quiz_${topicId}_${idx}" value="${optIdx}"> ${opt}</label>`;
+            });
+            html += `</div>`;
+        });
+        container.innerHTML = html;
+
+        // Show completion status
+        if (data.completed) {
+            const btn = document.getElementById(`${topicId}-complete-btn`);
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = '✅ Tema opravljena';
+            }
+        }
+    }
+
+    function renderNotes(topicId) {
+        const container = document.getElementById(`${topicId}-notes`);
+        const data = topicsData[topicId];
+        if (container) {
+            container.innerHTML = `<strong>📝 Zapiski za papir:</strong><br>${data.notes}`;
+        }
+    }
+
+    // ==================== PREVERI ODGOVOR ====================
+    window.checkAnswer = function(topicId, idx) {
+        const input = document.getElementById(`input-${topicId}-${idx}`);
+        const answer = input.value.trim().toLowerCase();
+        const ex = topicsData[topicId].exercises[idx];
+        const correct = ex.correct.toLowerCase();
+        const isCorrect = answer === correct || correct.includes(answer) || answer.includes(correct);
+
+        const feedbackDiv = document.getElementById(`feedback-${topicId}-${idx}`);
+        const stepsDiv = document.getElementById(`steps-${topicId}-${idx}`);
+
+        if (isCorrect) {
+            feedbackDiv.className = 'feedback correct';
+            feedbackDiv.innerHTML = '✅ Pravilno!';
+            stepsDiv.style.display = 'none';
+        } else {
+            feedbackDiv.className = 'feedback wrong';
+            feedbackDiv.innerHTML = `❌ Napačno. Pravilen odgovor: ${ex.answer_display}`;
+            stepsDiv.innerHTML = `<strong>📖 Pravilen postopek:</strong><br>${ex.steps}`;
+            stepsDiv.style.display = 'block';
+        }
+        feedbackDiv.style.display = 'block';
+    };
+
+    // ==================== KVIZ ====================
+    window.submitQuiz = function(topicId) {
+        const data = topicsData[topicId];
+        let score = 0;
+        for (let i = 0; i < data.quiz.length; i++) {
+            const selected = document.querySelector(`input[name="quiz_${topicId}_${i}"]:checked`);
+            if (selected && parseInt(selected.value) === data.quiz[i].correct) {
+                score++;
+            }
+        }
+        const total = data.quiz.length;
+        const passed = score >= total - 1;
+        const resultDiv = document.getElementById(`${topicId}-quiz-result`);
+
+        if (passed) {
+            resultDiv.innerHTML = `<div class="message" style="background:#d4edda; color:#155724;">✅ Rezultat: ${score}/${total} – Kviz opravljen! Sedaj lahko zakleneš temo.</div>`;
+            // Enable the complete button
+            const btn = document.getElementById(`${topicId}-complete-btn`);
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = '✅ Označi temo kot opravljeno';
+            }
+        } else {
+            resultDiv.innerHTML = `<div class="message" style="background:#f8d7da; color:#721c24;">❌ Rezultat: ${score}/${total} – Potrebuješ vsaj ${total-1}/${total}. Poskusi znova.</div>`;
+        }
+    };
+
+    // ==================== ZAKLJUČI TEMO ====================
+    window.completeTopic = function(topicId) {
+        if (topicsData[topicId].completed) {
+            alert('Ta tema je že opravljena!');
+            return;
+        }
+        topicsData[topicId].completed = true;
+        localStorage.setItem(`${topicId}_completed`, 'true');
+        const btn = document.getElementById(`${topicId}-complete-btn`);
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = '✅ Tema opravljena';
+        }
+        alert(`🎉 Čestitke! Opravili ste temo ${topicsData[topicId].name}!`);
+    };
+
+    // ==================== PREKLOP TEME ====================
+    function switchTopic(topicId) {
+        document.querySelectorAll('.topic-content').forEach(el => {
+            el.classList.add('hidden');
+        });
+        document.getElementById(topicId).classList.remove('hidden');
+
+        document.querySelectorAll('.topic-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`.topic-btn[data-topic="${topicId}"]`).classList.add('active');
+    }
+
+    // ==================== INIT ====================
+    function init() {
+        renderExercises('mnozice');
+        renderQuiz('mnozice');
+        renderNotes('mnozice');
+        renderExercises('izjave');
+        renderQuiz('izjave');
+        renderNotes('izjave');
+
+        // Set initial completed state for buttons
+        if (topicsData.mnozice.completed) {
+            const btn = document.getElementById('mnozice-complete-btn');
+            if (btn) { btn.disabled = true; btn.textContent = '✅ Tema opravljena'; }
+        }
+        if (topicsData.izjave.completed) {
+            const btn = document.getElementById('izjave-complete-btn');
+            if (btn) { btn.disabled = true; btn.textContent = '✅ Tema opravljena'; }
+        }
+
+        // Topic switch buttons
+        document.querySelectorAll('.topic-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                switchTopic(btn.getAttribute('data-topic'));
+            });
+        });
+    }
+
+    init();
+</script>
+</body>
+</html>
