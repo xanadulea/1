@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ topic.name }}</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            background: #f8f8f5;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+        }
+        h1, h2 { color: #0a2f1f; margin-top: 1rem; }
+        .theory {
+            background: #f9f9f5;
+            padding: 1rem;
+            border-left: 4px solid #0a2f1f;
+            margin: 1rem 0;
+            white-space: pre-line;
+        }
+        .exercise {
+            background: #fef9e6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid #eee0b0;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 0.5rem;
+            margin: 0.5rem 0;
+        }
+        .feedback { margin-top: 0.5rem; padding: 0.5rem; display: none; }
+        .feedback.correct { background: #d4edda; }
+        .feedback.wrong { background: #f8d7da; }
+        .step-solution {
+            display: none;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #e8f0e8;
+        }
+        button {
+            background: #0a2f1f;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        .quiz-question {
+            background: #f0f0f0;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .quiz-option { display: block; margin: 0.3rem 0; }
+        .complete-btn { width: 100%; padding: 0.8rem; margin-top: 2rem; }
+        .message { background: #c7a03b; padding: 0.8rem; text-align: center; margin-top: 1rem; }
+        .notes { background: #e8f0e8; padding: 1rem; margin-top: 1rem; white-space: pre-line; }
+        .back-btn { margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button class="back-btn" onclick="location.href='/'">← Nazaj</button>
+    <h1>{{ topic.name }}</h1>
+    {% if topic_id in progress.completed_topics %}
+        <div class="message">✅ Opravljeno!</div>
+    {% endif %}
+    <div class="theory">{{ topic.theory|safe }}</div>
+    <h2>📝 Vaje</h2>
+    {% for ex in topic.exercises %}
+    <div class="exercise">
+        <p><strong>{{ loop.index }}.</strong> {{ ex.q }}</p>
+        <input type="text" class="answer-input" id="input-{{ loop.index0 }}" placeholder="Vpiši odgovor...">
+        <button onclick="checkAnswer({{ loop.index0 }})">Preveri</button>
+        <div class="feedback" id="feedback-{{ loop.index0 }}"></div>
+        <div class="step-solution" id="steps-{{ loop.index0 }}"></div>
+    </div>
+    {% endfor %}
+    <h2>📊 Kviz</h2>
+    {% for q in topic.quiz %}
+    <div class="quiz-question">
+        <p><strong>{{ loop.index }}.</strong> {{ q.q }}</p>
+        {% for opt in q.options %}
+        <label class="quiz-option"><input type="radio" name="quiz_{{ loop.index0 }}" value="{{ loop.index0 }}"> {{ opt }}</label>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    <button onclick="submitQuiz()">Oddaj kviz</button>
+    <div id="quiz-result"></div>
+    {% if topic_id not in progress.completed_topics %}
+    <button class="complete-btn" id="completeBtn" onclick="completeTopic()" disabled>🔒 Najprej opravi kviz</button>
+    {% else %}
+    <button class="complete-btn" disabled>✅ Opravljeno</button>
+    {% endif %}
+    <div class="notes"><strong>📝 Zapiski:</strong><br>{{ topic.notes }}</div>
+</div>
+<script>
+    let quizPassed = false;
+    let currentTopicId = "{{ topic_id }}";
+    let topicExercises = {{ topic.exercises|tojson }};
+    let topicQuiz = {{ topic.quiz|tojson }};
+    let totalQuestions = topicQuiz.length;
+
+    async function checkAnswer(idx) {
+        let answer = document.getElementById(`input-${idx}`).value;
+        let ex = topicExercises[idx];
+        let res = await fetch('/api/check', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({answer: answer, correct: ex.correct, answer_display: ex.answer_display, steps: ex.steps})
+        });
+        let data = await res.json();
+        let fb = document.getElementById(`feedback-${idx}`);
+        let st = document.getElementById(`steps-${idx}`);
+        fb.className = `feedback ${data.correct ? 'correct' : 'wrong'}`;
+        fb.innerHTML = data.message;
+        if (!data.correct) {
+            st.innerHTML = `<strong>📖 Postopek:</strong><br>${data.steps}`;
+            st.style.display = 'block';
+        } else st.style.display = 'none';
+        fb.style.display = 'block';
+    }
+
+    async function submitQuiz() {
+        let answers = [];
+        for (let i = 0; i < totalQuestions; i++) {
+            let sel = document.querySelector(`input[name="quiz_${i}"]:checked`);
+            answers.push(sel ? parseInt(sel.value) : -1);
+        }
+        let res = await fetch('/api/quiz', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({answers: answers, topic_id: currentTopicId})
+        });
+        let data = await res.json();
+        let div = document.getElementById('quiz-result');
+        if (data.passed) {
+            div.innerHTML = `<div class="message" style="background:#d4edda;">✅ Rezultat: ${data.score}/${data.total} – Kviz opravljen!</div>`;
+            document.getElementById('completeBtn').disabled = false;
+            quizPassed = true;
+        } else {
+            div.innerHTML = `<div class="message" style="background:#f8d7da;">❌ Rezultat: ${data.score}/${data.total} – Potrebuješ vsaj ${data.total-1}/${data.total}.</div>`;
+        }
+    }
+
+    async function completeTopic() {
+        if (!quizPassed) { alert('Najprej opravi kviz!'); return; }
+        await fetch('/api/complete_topic', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({topic_id: currentTopicId})
+        });
+        location.href = '/';
+    }
+</script>
+</body>
+</html>
