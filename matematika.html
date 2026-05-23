@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>Matematika 1 – izbira teme</title>
+    <style>
+        body {
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            background: #f0f0eb;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #0a2f1f;
+            margin-bottom: 1rem;
+        }
+        .back-btn {
+            background: #0a2f1f;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            margin-bottom: 2rem;
+        }
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        .topic-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: 0.2s;
+        }
+        .topic-card:hover {
+            border-color: #0a2f1f;
+            transform: scale(1.02);
+        }
+        .topic-card h3 {
+            color: #0a2f1f;
+            margin-bottom: 0.5rem;
+        }
+        .topic-card p {
+            color: #555;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button class="back-btn" onclick="location.href='index.html'">← Nazaj na predmete</button>
+    <h1>📐 Matematika 1 – izbira teme</h1>
+    <div class="topics-grid">
+        <div class="topic-card" onclick="location.href='tema1.html'">
+            <h3>📦 Množice</h3>
+            <p>∈, ⊂, ∅, ∪, ∩, \, ×, relacije, preslikave, grupe</p>
+        </div>
+        <div class="topic-card" onclick="alert('Tema bo dodana kmalu')">
+            <h3>🧠 Izjave in logika</h3>
+            <p>∧, ∨, ⇒, ⇔, ¬, ∀, ∃</p>
+        </div>
+        <div class="topic-card" onclick="alert('Tema bo dodana kmalu')">
+            <h3>🔢 Števila</h3>
+            <p>N, Z, Q, R, C</p>
+        </div>
+        <div class="topic-card" onclick="alert('Tema bo dodana kmalu')">
+            <h3>📈 Zaporedja</h3>
+            <p>Monotonost, limita, Cauchy</p>
+        </div>
+        <div class="topic-card" onclick="alert('Tema bo dodana kmalu')">
+            <h3>📊 Vrste</h3>
+            <p>Geometrijska, harmonična, kriteriji</p>
+        </div>
+        <div class="topic-card" onclick="alert('Tema bo dodana kmalu')">
+            <h3>📌 Funkcije</h3>
+            <p>Injektivnost, surjektivnost, zveznost</p>
+        </div>
+        <div class="topic-card" onclick="alert('Tema bo dodana kmalu')">
+            <h3>⚡ Odvodi</h3>
+            <p>Pravila, Rolle, Lagrange, L'Hospital</p>
+        </div>
+        <div class="topic-card" onclick="alert('Tema bo dodana kmalu')">
+            <h3>∫ Integrali</h3>
+            <p>Nedoločeni, določeni, FTC</p>
+        </div>
+        <div class="topic-card" onclick="alert('Tema bo dodana kmalu')">
+            <h3>📜 Taylor</h3>
+            <p>Taylorjev polinom, razvoji</p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
