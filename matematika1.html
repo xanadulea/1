@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="sl">
 <head>
     <meta charset="UTF-8">
-    <title>Matematika 1 – Dnevi</title>
+    <title>Matematika 1 – Celoten tečaj</title>
     <style>
         * {
             margin: 0;
@@ -18,7 +17,7 @@
             padding: 2rem;
         }
         .container {
-            max-width: 1000px;
+            max-width: 1200px;
             margin: 0 auto;
             background: white;
             padding: 2rem;
@@ -29,7 +28,7 @@
             color: #0a2f1f;
             border-bottom: 3px solid #0a2f1f;
             padding-bottom: 0.5rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
         }
         .back-btn {
             background: #0a2f1f;
@@ -40,12 +39,31 @@
             cursor: pointer;
             margin-bottom: 1.5rem;
         }
+        /* Progress bar */
+        .progress-container {
+            background: #e0e0e0;
+            border-radius: 2rem;
+            height: 1.5rem;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: #0a2f1f;
+            width: 0%;
+            height: 100%;
+            border-radius: 2rem;
+            transition: width 0.3s;
+            color: white;
+            text-align: center;
+            line-height: 1.5rem;
+            font-size: 0.8rem;
+        }
         /* Day navigation */
         .day-nav {
             display: flex;
             flex-wrap: wrap;
             gap: 0.5rem;
-            margin-bottom: 2rem;
+            margin: 1.5rem 0;
         }
         .day-btn {
             background: #e8e8e0;
@@ -53,12 +71,11 @@
             padding: 0.5rem 1rem;
             border-radius: 2rem;
             cursor: pointer;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
         }
         .day-btn.completed {
             background: #0a2f1f;
             color: white;
-            border-color: #0a2f1f;
         }
         .day-btn.locked {
             background: #ccc;
@@ -68,7 +85,6 @@
         .day-btn.active {
             background: #c7a03b;
             color: #1a2a1a;
-            border-color: #c7a03b;
         }
         /* Content */
         .theory {
@@ -78,7 +94,7 @@
             margin: 1rem 0;
             white-space: pre-line;
         }
-        .exercise {
+        .exercise, .ustna {
             background: #fef9e6;
             padding: 1rem;
             margin: 1rem 0;
@@ -132,7 +148,7 @@
             background: #0a2f1f;
             color: white;
             border: none;
-            padding: 0.8rem 2rem;
+            padding: 0.8rem;
             border-radius: 2rem;
             cursor: pointer;
             font-size: 1rem;
@@ -151,15 +167,22 @@
             border-radius: 0.3rem;
             margin-top: 1rem;
         }
-        .notes {
+        .notes, .ustna-odgovor {
             background: #e8f0e8;
             padding: 1rem;
             border-radius: 0.3rem;
-            margin-top: 1rem;
+            margin-top: 0.5rem;
             white-space: pre-line;
+            display: none;
         }
-        hr { margin: 1.5rem 0; border-color: #ddd; }
-        .hidden { display: none; }
+        hr { margin: 1.5rem 0; }
+        details { margin: 0.5rem 0; }
+        summary { cursor: pointer; color: #0a2f1f; font-weight: bold; }
+        .ustna-btn {
+            background: #c7a03b;
+            color: #1a2a1a;
+            margin-top: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -167,54 +190,111 @@
     <button class="back-btn" onclick="location.href='index.html'">← Nazaj na predmete</button>
     <h1>📐 Matematika 1</h1>
 
+    <!-- Progress bar -->
+    <div class="progress-container">
+        <div class="progress-fill" id="progressFill">0%</div>
+    </div>
+
     <div class="day-nav" id="dayNav"></div>
     <div id="dayContent"></div>
 </div>
 
 <script>
     // ==================== PODATKI ZA VSE DNEVE ====================
+    // Day 1: Množice (osnove + relacije + preslikave + grupe)
+    // Day 2: Izjave in logika
+    // Day 3: Števila (N, Z, Q, R, C)
+    // Day 4: Zaporedja
+    // Day 5: Vrste
+    // Day 6: Funkcije
+    // Day 7: Odvodi
+    // Day 8: Integrali
+    // Day 9: Taylor
+    // Day 10-16: Poglobljeno + izpiti
+
     const daysData = {
         1: {
-            title: 'Day 1: Množice (osnove, ∈, ⊂, ∅, ∪, ∩, \\)',
-            theory: `==================== MNOŽICE ====================
+            title: 'Day 1: Množice, relacije, preslikave, grupe',
+            theory: `==================== MNOŽICE (OSNOVE) ====================
 
 📌 KAJ JE MNOŽICA?
-Množica je zbirka različnih stvari. Tem stvarem rečemo ELEMENTI.
-Primer: A = {1, 2, 3}
+Množica je zbirka različnih stvari. Elementi so znotraj {}.
+Primer: A = {1,2,3}
 
 🔤 POMEN SIMBOLOV:
-∈ = "je element" → 2 ∈ {1,2,3}
-∉ = "ni element" → 5 ∉ {1,2,3}
-⊂ = "je podmnožica" → {2} ⊂ {1,2,3}
-∅ = prazna množica
+∈ = "je element" (2 ∈ {1,2,3})
+∉ = "ni element" (5 ∉ {1,2,3})
+⊂ = "je podmnožica" ({2} ⊂ {1,2,3})
+∅ = prazna množica (podmnožica vsake množice)
 
-🔗 OPERACIJE:
+🔗 OPERACIJE Z MNOŽICAMI:
 A ∪ B = unija (vse v A ali B)
 A ∩ B = presek (skupni elementi)
 A \\ B = razlika (v A, ni pa v B)
 A^c = komplement (vse razen A)
 
-==================== INTERVALI ====================
-[2,5] = zaprt (vključno 2 in 5)
-(2,5) = odprt (brez 2 in 5)
-(2,∞) = vsa števila večja od 2
-(-∞,2] = vsa števila manjša ali enaka 2
+📜 DE MORGAN:
+(A ∪ B)^c = A^c ∩ B^c
+(A ∩ B)^c = A^c ∪ B^c
 
-==================== NEENAČBE ====================
-Linearna: 2x+3 > 7 → x > 2 → (2,∞)
-Kvadratna: x²-4 < 0 → -2 < x < 2 → (-2,2)
-Absolutna: |x-2| < 5 → -3 < x < 7 → (-3,7)`,
+🔄 KARTEZIČNI PRODUKT:
+A × B = {(a,b) : a∈A, b∈B}  → |A×B| = |A|·|B|
+
+==================== RELACIJE ====================
+
+📌 KAJ JE RELACIJA?
+Relacija R na množici A je podmnožica kartezičnega produkta A × A.
+Primer: "manjše od" na {1,2,3} → R = {(1,2), (1,3), (2,3)}
+
+🔤 LASTNOSTI RELACIJ:
+- REFLEKSIVNA: ∀a∈A: (a,a)∈R
+- SIMETRIČNA: (a,b)∈R ⇒ (b,a)∈R
+- TRANZITIVNA: (a,b)∈R in (b,c)∈R ⇒ (a,c)∈R
+- ANTISIMETRIČNA: (a,b)∈R in (b,a)∈R ⇒ a=b
+
+📌 EKVIVALENČNA RELACIJA = refleksivna + simetrična + tranzitivna
+📌 DELNA UREDITEV = refleksivna + antisimetrična + tranzitivna
+
+==================== PRESLIKAVE (FUNKCIJE) ====================
+
+📌 KAJ JE PRESLIKAVA?
+Preslikava f: A → B priredi vsakemu a∈A natanko en b∈B.
+
+🔤 VRSTE PRESLIKAV:
+- INJEKTIVNA: različni a-ji dajo različne b-je
+- SURJEKTIVNA: vsak b∈B je dosežen
+- BIJEKTIVNA = injektivna + surjektivna
+
+==================== GRUPE ====================
+
+📌 KAJ JE GRUPA?
+Množica G z operacijo * (npr. + ali ·) mora imeti:
+1. ZAPRTJE: a*b ∈ G
+2. ASOCIATIVNOST: (a*b)*c = a*(b*c)
+3. NEVTRALNI ELEMENT: e*a = a*e = a
+4. INVERZ: a*a⁻¹ = a⁻¹*a = e
+
+Primeri: (ℤ, +), (ℝ\{0}, ·), (ℂ, +)`,
             exercises: [
-                { q: 'A = {1,2,3}, B = {3,4,5}. A ∪ B = ?', correct: '{1,2,3,4,5}', answer_display: '{1,2,3,4,5}', steps: 'Unija = vse kar je v A ali B. Elementi: 1,2,3 iz A, 3,4,5 iz B → {1,2,3,4,5}' },
+                { q: 'A = {1,2,3}, B = {3,4,5}. A ∪ B = ?', correct: '{1,2,3,4,5}', answer_display: '{1,2,3,4,5}', steps: 'Unija = vse kar je v A ali B.' },
                 { q: 'A = {1,2,3}, B = {3,4,5}. A ∩ B = ?', correct: '{3}', answer_display: '{3}', steps: 'Presek = skupni elementi. Samo 3 je v obeh.' },
-                { q: 'Reši: 2x + 1 > 5', correct: 'x>2', answer_display: 'x > 2 ali (2, ∞)', steps: '2x > 4 → x > 2' }
+                { q: 'Ali je relacija "=" (enako) na ℝ ekvivalenčna?', correct: 'da', answer_display: 'Da', steps: 'Refleksivna (a=a), simetrična (a=b ⇒ b=a), tranzitivna (a=b in b=c ⇒ a=c).' },
+                { q: 'Ali je preslikava f: ℝ→ℝ, f(x)=x² injektivna?', correct: 'ne', answer_display: 'Ne', steps: 'f(2)=4, f(-2)=4, različna a-ja dasta isti b.' },
+                { q: 'Ali je (ℤ, +) grupa?', correct: 'da', answer_display: 'Da', steps: 'Zaprtje, asociativnost, nevtralni 0, inverz -a.' }
             ],
             quiz: [
                 { q: 'Kaj pomeni ∈?', options: ['Je podmnožica', 'Je element', 'Unija'], correct: 1 },
                 { q: 'A∩B = ? (A={1,2,3}, B={3,4,5})', options: ['{1,2,3,4,5}', '{3}', '{1,2}'], correct: 1 },
-                { q: 'Reši: x > 3', options: ['(-∞,3)', '(3,∞)', '[3,∞)'], correct: 1 }
+                { q: 'Ali je relacija "≤" na ℝ ekvivalenčna?', options: ['Da', 'Ne', 'Odvisno'], correct: 1 }
             ],
-            notes: 'Množice: ∈ (element), ⊂ (podmnožica), ∅ (prazna), ∪ (unija), ∩ (presek). Intervali: [a,b] zaprt, (a,b) odprt.'
+            ustna: [
+                { q: 'Kaj je podmnožica?', a: 'Množica B je podmnožica A, če je vsak element iz B tudi v A. Oznaka: B ⊂ A.' },
+                { q: 'Kaj je kartezični produkt?', a: 'A × B = {(a,b) : a∈A, b∈B} – vsi možni urejeni pari.' },
+                { q: 'Naštej lastnosti ekvivalenčne relacije.', a: 'Refleksivnost, simetričnost, tranzitivnost.' },
+                { q: 'Kaj pomeni injektivna preslikava?', a: 'Različni elementi iz domene gredo v različne elemente v kodomeni.' },
+                { q: 'Kaj je grupa?', a: 'Množica z operacijo, ki je zaprta, asociativna, ima nevtralni element in vsak element ima inverz.' }
+            ],
+            notes: 'Množice: ∈, ⊂, ∅, ∪, ∩, \\, ×. Relacije: refleksivna, simetrična, tranzitivna. Preslikave: injektivna, surjektivna, bijektivna. Grupe: zaprtje, asociativnost, nevtralni, inverz.'
         },
         2: {
             title: 'Day 2: Izjave in logika (∧, ∨, ⇒, ⇔, ¬, ∀, ∃)',
@@ -241,27 +321,30 @@ P ⇔ Q = P natanko tedaj ko Q (resnično, ko sta enaki)
 ¬(∃x P(x)) = ∀x ¬P(x)
 ¬(P ⇒ Q) = P ∧ ¬Q`,
             exercises: [
-                { q: 'P: 2+2=4 (P), Q: 3+3=7 (N). P ∧ Q = ?', correct: 'N', answer_display: 'N (napačno)', steps: 'Konjunkcija (∧) je resnična le, če sta obe resnični. Q je napačna → P∧Q napačna.' },
-                { q: 'P: 2+2=4 (P), Q: 3+3=7 (N). P ∨ Q = ?', correct: 'P', answer_display: 'P (pravilno)', steps: 'Disjunkcija (∨) je resnična, če je vsaj ena resnična. P je resnična.' },
-                { q: 'Negacija ∀x∈ℝ: x>0', correct: '∃x∈ℝ: x≤0', answer_display: '∃x∈ℝ: x≤0', steps: '¬(∀x P(x)) = ∃x ¬P(x). ¬(x>0) je x≤0.' }
+                { q: 'P: 2+2=4 (P), Q: 3+3=7 (N). P ∧ Q = ?', correct: 'N', answer_display: 'N (napačno)', steps: 'Konjunkcija (∧) je resnična le, če sta obe resnični.' },
+                { q: 'Negacija ∀x∈ℝ: x>0', correct: '∃x∈ℝ: x≤0', answer_display: '∃x∈ℝ: x≤0', steps: '¬(∀x P(x)) = ∃x ¬P(x).' }
             ],
             quiz: [
                 { q: 'P: 2+2=4, Q: 3+3=6. P ∧ Q = ?', options: ['P', 'N', 'Ni izjava'], correct: 0 },
-                { q: 'Negacija ∃x: P(x) je:', options: ['∃x: ¬P(x)', '∀x: ¬P(x)', '∀x: P(x)'], correct: 1 },
-                { q: 'P ⇔ Q je resnična, kadar:', options: ['P in Q različni', 'P in Q enaki', 'P resnična'], correct: 1 }
+                { q: 'Negacija ∃x: P(x) je:', options: ['∃x: ¬P(x)', '∀x: ¬P(x)', '∀x: P(x)'], correct: 1 }
+            ],
+            ustna: [
+                { q: 'Kaj je izjava?', a: 'Trditev, ki je lahko pravilna ali napačna.' },
+                { q: 'Kdaj je implikacija P⇒Q napačna?', a: 'Samo ko je P resničen in Q napačen.' },
+                { q: 'Kako zanikamo ∀x P(x)?', a: '∃x ¬P(x).' }
             ],
             notes: 'Izjava = P ali N. ∧ (in), ∨ (ali), ⇒ (če-potem), ⇔ (natanko tedaj), ¬ (ne). ∀ (za vsak), ∃ (obstaja).'
         }
-        // Day 3–16 bomo dodajali postopoma
     };
 
-    // Dodaj placeholder za dneve 3–16
+    // Add days 3–16 (placeholders for now, will fill progressively)
     for (let i = 3; i <= 16; i++) {
         daysData[i] = {
-            title: `Day ${i}: (v pripravi)`,
-            theory: `Vsebina za dan ${i} bo dodana kmalu.`,
+            title: `Day ${i}: (v pripravi – dodajam sproti)`,
+            theory: `Vsebina za dan ${i} bo dodana kmalu. Želiš določeno temo? Sporoči!`,
             exercises: [],
-            quiz: [],
+            quiz: [{ q: 'Vprašanje za kviz', options: ['A', 'B', 'C'], correct: 0 }],
+            ustna: [{ q: 'Vprašanje za ustni izpit', a: 'Odgovor' }],
             notes: ''
         };
     }
@@ -273,16 +356,22 @@ P ⇔ Q = P natanko tedaj ko Q (resnično, ko sta enaki)
     function saveProgress() {
         localStorage.setItem('math_completedDays', JSON.stringify(completedDays));
         localStorage.setItem('math_currentDay', currentDay);
+        updateProgressBar();
     }
 
-    function isDayCompleted(day) {
-        return completedDays.includes(day);
+    function updateProgressBar() {
+        const total = Object.keys(daysData).length;
+        const completed = completedDays.length;
+        const percent = Math.round((completed / total) * 100);
+        const fill = document.getElementById('progressFill');
+        if (fill) {
+            fill.style.width = `${percent}%`;
+            fill.textContent = `${percent}%`;
+        }
     }
 
-    function isDayUnlocked(day) {
-        if (day === 1) return true;
-        return isDayCompleted(day - 1);
-    }
+    function isDayCompleted(day) { return completedDays.includes(day); }
+    function isDayUnlocked(day) { return day === 1 || isDayCompleted(day - 1); }
 
     function markDayCompleted(day) {
         if (!completedDays.includes(day)) {
@@ -357,24 +446,36 @@ P ⇔ Q = P natanko tedaj ko Q (resnično, ko sta enaki)
             quizHtml += `</div>`;
         });
 
+        let ustnaHtml = '';
+        dayData.ustna.forEach((q, idx) => {
+            ustnaHtml += `
+                <div class="ustna">
+                    <p><strong>${idx+1}.</strong> ${q.q}</p>
+                    <button class="ustna-btn" onclick="toggleUstna(${day}, ${idx})">🔍 Pokaži odgovor</button>
+                    <div class="ustna-odgovor" id="ustna-${day}-${idx}">${q.a}</div>
+                </div>
+            `;
+        });
+
         container.innerHTML = `
             <h2>${dayData.title}</h2>
             <div class="theory">${dayData.theory}</div>
+            
             <h3>📝 Vaje</h3>
             ${exercisesHtml || '<p>Vaje bodo dodane kmalu.</p>'}
+            
             <h3>📊 Kviz</h3>
             ${quizHtml || '<p>Kviz bo dodan kmalu.</p>'}
             <button onclick="submitQuiz(${day})">Oddaj kviz</button>
             <div id="quiz-result-${day}"></div>
+            
+            <h3>🎤 Ustni izpit – vprašanja</h3>
+            ${ustnaHtml || '<p>Ustna vprašanja bodo dodana.</p>'}
+            
             ${!completed ? `<button class="complete-btn" id="complete-btn-${day}" onclick="completeDay(${day})" disabled>🔒 Najprej opravi kviz</button>` : `<button class="complete-btn" disabled>✅ Dan opravljen</button>`}
+            
             <div class="notes"><strong>📝 Zapiski za papir:</strong><br>${dayData.notes || 'Zapiski bodo dodani.'}</div>
         `;
-
-        // Če je dan že opravljen, onemogoči kviz gumbe? Ne, pustimo da lahko ponavlja.
-        if (completed) {
-            const btn = document.getElementById(`complete-btn-${day}`);
-            if (btn) btn.disabled = true;
-        }
     }
 
     // ==================== PREVERI ODGOVOR ====================
@@ -401,6 +502,15 @@ P ⇔ Q = P natanko tedaj ko Q (resnično, ko sta enaki)
         feedbackDiv.style.display = 'block';
     };
 
+    window.toggleUstna = function(day, idx) {
+        const div = document.getElementById(`ustna-${day}-${idx}`);
+        if (div.style.display === 'none' || div.style.display === '') {
+            div.style.display = 'block';
+        } else {
+            div.style.display = 'none';
+        }
+    };
+
     // ==================== KVIZ ====================
     window.submitQuiz = function(day) {
         const dayData = daysData[day];
@@ -420,18 +530,17 @@ P ⇔ Q = P natanko tedaj ko Q (resnično, ko sta enaki)
         const resultDiv = document.getElementById(`quiz-result-${day}`);
 
         if (passed) {
-            resultDiv.innerHTML = `<div class="message" style="background:#d4edda; color:#155724;">✅ Rezultat: ${score}/${total} – Kviz opravljen! Sedaj lahko zakleneš dan.</div>`;
+            resultDiv.innerHTML = `<div class="message" style="background:#d4edda;">✅ Rezultat: ${score}/${total} – Kviz opravljen! Sedaj lahko zakleneš dan.</div>`;
             const completeBtn = document.getElementById(`complete-btn-${day}`);
             if (completeBtn) {
                 completeBtn.disabled = false;
                 completeBtn.textContent = '✅ Označi dan kot opravljen';
             }
         } else {
-            resultDiv.innerHTML = `<div class="message" style="background:#f8d7da; color:#721c24;">❌ Rezultat: ${score}/${total} – Potrebuješ vsaj ${total-1}/${total}. Poskusi znova.</div>`;
+            resultDiv.innerHTML = `<div class="message" style="background:#f8d7da;">❌ Rezultat: ${score}/${total} – Potrebuješ vsaj ${total-1}/${total}. Poskusi znova.</div>`;
         }
     };
 
-    // ==================== ZAKLJUČI DAN ====================
     window.completeDay = function(day) {
         if (isDayCompleted(day)) {
             alert('Ta dan je že opravljen!');
@@ -443,6 +552,7 @@ P ⇔ Q = P natanko tedaj ko Q (resnično, ko sta enaki)
     // ==================== INIT ====================
     renderDayNav();
     renderDayContent(currentDay);
+    updateProgressBar();
 </script>
 </body>
 </html>
