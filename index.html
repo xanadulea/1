@@ -25,7 +25,6 @@
             padding-bottom: 0.5rem;
             margin-bottom: 2rem;
         }
-        /* Grid kvadratov */
         .topics-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -108,22 +107,19 @@
 </div>
 
 <script>
-    // ==================== SEZNAM TEM ====================
     const topics = [
-        { id: 'mnozice', name: '📦 Množice', desc: '∈, ⊂, ∅, ∪, ∩, \\, ×, relacije, preslikave, grupe', completed: false },
-        { id: 'izjave', name: '🧠 Izjave in logika', desc: '∧, ∨, ⇒, ⇔, ¬, ∀, ∃, resničnostne tabele', completed: false },
-        { id: 'stevila', name: '🔢 Števila', desc: 'N, Z, Q, R, C, absolutna vrednost, intervali', completed: false },
-        { id: 'zaporedja', name: '📈 Zaporedja', desc: 'Definicija, monotonost, omejenost, limita, Cauchy', completed: false },
-        { id: 'vrste', name: '📊 Vrste', desc: 'Geometrijska, harmonična, kriteriji, Leibniz', completed: false },
-        { id: 'funkcije', name: '📌 Funkcije', desc: 'Definicija, injektivnost, surjektivnost, kompozitum, inverz', completed: false },
-        { id: 'odvodi', name: '⚡ Odvodi', desc: 'Odvod, pravila, verižno, Rolle, Lagrange, L\'Hospital', completed: false },
-        { id: 'integrali', name: '∫ Integrali', desc: 'Nedoločeni, določeni, FTC, substitucija, per partes', completed: false },
-        { id: 'taylor', name: '📜 Taylor', desc: 'Taylorjev polinom, ostanek, razvoji', completed: false }
+        { id: 'mnozice', name: '📦 Množice', desc: '∈, ⊂, ∅, ∪, ∩, \\, ×, relacije, preslikave, grupe' },
+        { id: 'izjave', name: '🧠 Izjave in logika', desc: '∧, ∨, ⇒, ⇔, ¬, ∀, ∃, resničnostne tabele' },
+        { id: 'stevila', name: '🔢 Števila', desc: 'N, Z, Q, R, C, absolutna vrednost, intervali, √2 dokaz' },
+        { id: 'zaporedja', name: '📈 Zaporedja', desc: 'Definicija, monotonost, omejenost, limita, Cauchy' },
+        { id: 'vrste', name: '📊 Vrste', desc: 'Geometrijska, harmonična, primerjalni, kvocientni, korenski, Leibniz' },
+        { id: 'funkcije', name: '📌 Funkcije', desc: 'Definicija, injektivnost, surjektivnost, kompozitum, inverz, limita, zveznost' },
+        { id: 'odvodi', name: '⚡ Odvodi', desc: 'Odvod, pravila, verižno, Rolle, Lagrange, L\'Hospital, ekstremi' },
+        { id: 'integrali', name: '∫ Integrali', desc: 'Nedoločeni, določeni, FTC, substitucija, per partes, ploščina, prostornina' },
+        { id: 'taylor', name: '📜 Taylor', desc: 'Taylorjev polinom, ostanek, razvoji (eˣ, sin, cos, ln, arctan)' }
     ];
 
-    // Load progress from localStorage
     let completedTopics = JSON.parse(localStorage.getItem('math_completedTopics') || '[]');
-    topics.forEach(t => { t.completed = completedTopics.includes(t.id); });
 
     function saveProgress() {
         localStorage.setItem('math_completedTopics', JSON.stringify(completedTopics));
@@ -142,23 +138,17 @@
         }
     }
 
-    function markTopicCompleted(topicId) {
-        if (!completedTopics.includes(topicId)) {
-            completedTopics.push(topicId);
-            saveProgress();
-        }
-    }
-
     function renderTopicsGrid() {
         const grid = document.getElementById('topicsGrid');
         grid.innerHTML = '';
         topics.forEach(topic => {
+            const isCompleted = completedTopics.includes(topic.id);
             const card = document.createElement('div');
-            card.className = `topic-card ${topic.completed ? 'completed' : ''}`;
+            card.className = `topic-card ${isCompleted ? 'completed' : ''}`;
             card.innerHTML = `
                 <h3>${topic.name}</h3>
                 <p>${topic.desc}</p>
-                <div class="topic-status">${topic.completed ? '✅ Opravljeno' : '📌 Ni še opravljeno'}</div>
+                <div class="topic-status">${isCompleted ? '✅ Opravljeno' : '📌 Ni še opravljeno'}</div>
             `;
             card.onclick = () => {
                 window.location.href = `topic.html?id=${topic.id}`;
