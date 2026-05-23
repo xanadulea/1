@@ -18,8 +18,9 @@
             background: white;
             padding: 2rem;
             border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-        h1, h2, h3 { color: #0a2f1f; margin-top: 1rem; }
+        h1, h2, h3 { color: #0a2f1f; margin-top: 1rem; margin-bottom: 0.5rem; }
         .back-btn {
             background: #0a2f1f;
             color: white;
@@ -66,6 +67,7 @@
             padding: 0.5rem;
             background: #e8f0e8;
             border-radius: 0.3rem;
+            font-size: 0.9rem;
         }
         button {
             background: #0a2f1f;
@@ -139,7 +141,7 @@
 </head>
 <body>
 <div class="container">
-    <button class="back-btn" onclick="location.href='index.html'">← Nazaj</button>
+    <button class="back-btn" onclick="location.href='index.html'">← Nazaj na izbiro tem</button>
     <div id="content"></div>
 </div>
 
@@ -163,6 +165,7 @@ Primer: A = {1, 2, 3}
 A ∪ B = unija (vse v A ali B)
 A ∩ B = presek (skupni elementi)
 A \\ B = razlika (v A, ni pa v B)
+A^c = komplement (vse razen A)
 
 📜 DE MORGAN:
 (A ∪ B)^c = A^c ∩ B^c
@@ -173,17 +176,25 @@ A × B = {(a,b) : a∈A, b∈B} → |A×B| = |A|·|B|
 
 ==================== RELACIJE ====================
 Relacija R na A je podmnožica A×A.
+Lastnosti: refleksivna, simetrična, tranzitivna, antisimetrična.
 Ekvivalenčna = refleksivna + simetrična + tranzitivna.
 
 ==================== PRESLIKAVE ====================
+f: A→B, vsak a gre v en b.
 Injektivna: različni a-ji → različni b-ji.
 Surjektivna: vsak b je dosežen.
+Bijektivna = injektivna + surjektivna.
 
 ==================== GRUPE ====================
-Množica z operacijo *: zaprtje, asociativnost, nevtralni element, inverz.`,
+Množica G z operacijo *:
+1. Zaprtje: a*b ∈ G
+2. Asociativnost
+3. Nevtralni element e
+4. Inverz: a*a⁻¹ = e`,
             exercises: [
                 { q: 'A = {1,2,3}, B = {3,4,5}. A ∪ B = ?', correct: '{1,2,3,4,5}', answer_display: '{1,2,3,4,5}', steps: 'Unija = vse kar je v A ali B.' },
-                { q: 'A = {1,2,3}, B = {3,4,5}. A ∩ B = ?', correct: '{3}', answer_display: '{3}', steps: 'Presek = skupni elementi.' }
+                { q: 'A = {1,2,3}, B = {3,4,5}. A ∩ B = ?', correct: '{3}', answer_display: '{3}', steps: 'Presek = skupni elementi.' },
+                { q: 'Ali je relacija "=" (enako) ekvivalenčna?', correct: 'da', answer_display: 'Da', steps: 'Refleksivna, simetrična, tranzitivna.' }
             ],
             quiz: [
                 { q: 'Kaj pomeni ∈?', options: ['Je podmnožica', 'Je element', 'Unija'], correct: 1 },
@@ -191,28 +202,36 @@ Množica z operacijo *: zaprtje, asociativnost, nevtralni element, inverz.`,
             ],
             ustna: [
                 { q: 'Kaj je podmnožica?', a: 'Množica B je podmnožica A, če je vsak element iz B tudi v A.' },
-                { q: 'Naštej lastnosti ekvivalenčne relacije.', a: 'Refleksivnost, simetričnost, tranzitivnost.' }
+                { q: 'Naštej lastnosti ekvivalenčne relacije.', a: 'Refleksivnost, simetričnost, tranzitivnost.' },
+                { q: 'Kaj je grupa?', a: 'Množica z zaprto, asociativno operacijo, nevtralnim elementom in inverzi.' }
             ],
-            notes: '∈ = element, ⊂ = podmnožica, ∅ = prazna, ∪ = unija, ∩ = presek.'
+            notes: '∈ = element, ⊂ = podmnožica, ∅ = prazna, ∪ = unija, ∩ = presek, \\ = razlika.'
         },
         izjave: {
             name: '🧠 Izjave in logika',
-            theory: `==================== IZJAVE ====================
+            theory: `==================== IZJAVE IN LOGIKA ====================
 
-📌 SIMBOLI:
-∧ = "in" (konjunkcija)
-∨ = "ali" (disjunkcija)
+📌 KAJ JE IZJAVA?
+Izjava je trditev, ki je lahko PRAVILNA (P) ali NAPAČNA (N).
+
+🔤 SIMBOLI:
+∧ = "in" (konjunkcija) – resnično le, če sta obe resnični
+∨ = "ali" (disjunkcija) – resnično, če je vsaj ena resnična
 ⇒ = "če-potem" (implikacija) – napačno le, če je P resničen in Q napačen
-⇔ = "natanko tedaj ko" (ekvivalenca)
-¬ = "ne" (negacija)
+⇔ = "natanko tedaj ko" (ekvivalenca) – resnično, ko sta enaki
+¬ = "ne" (negacija) – obrne vrednost
 
 ∀ = "za vsak" (univerzalni kvantifikator)
 ∃ = "obstaja" (eksistenčni kvantifikator)
 
+⚠️ POMEMBNO: P ⇒ Q je resničen tudi, ko je P napačen!
+
 📜 NEGACIJE:
 ¬(∀x P(x)) = ∃x ¬P(x)
-¬(∃x P(x)) = ∀x ¬P(x)`,
+¬(∃x P(x)) = ∀x ¬P(x)
+¬(P ⇒ Q) = P ∧ ¬Q`,
             exercises: [
+                { q: 'P: 2+2=4 (P), Q: 3+3=7 (N). P ∧ Q = ?', correct: 'N', answer_display: 'N (napačno)', steps: 'Konjunkcija je resnična le, če sta obe resnični.' },
                 { q: 'Negacija ∀x∈ℝ: x>0', correct: '∃x∈ℝ: x≤0', answer_display: '∃x∈ℝ: x≤0', steps: '¬(∀x P(x)) = ∃x ¬P(x).' }
             ],
             quiz: [
@@ -223,34 +242,252 @@ Množica z operacijo *: zaprtje, asociativnost, nevtralni element, inverz.`,
                 { q: 'Kdaj je implikacija P⇒Q napačna?', a: 'Samo ko je P resničen in Q napačen.' },
                 { q: 'Kako zanikamo ∀x P(x)?', a: '∃x ¬P(x).' }
             ],
-            notes: '∧ = in, ∨ = ali, ⇒ = če-potem, ¬ = ne. ∀ = za vsak, ∃ = obstaja.'
+            notes: '∧ = in, ∨ = ali, ⇒ = če-potem, ⇔ = natanko tedaj, ¬ = ne. ∀ = za vsak, ∃ = obstaja.'
         },
         stevila: {
             name: '🔢 Števila',
             theory: `==================== ŠTEVILA ====================
 
-ℕ = {1,2,3,...}
-ℤ = {...,-2,-1,0,1,2,...}
-ℚ = {a/b : a,b∈ℤ, b≠0}
-ℝ = realna števila (vse točke na premici)
-ℂ = {a+ib : i²=-1}
+📌 NARAVNA (ℕ) = {1,2,3,...}
+Seštevanje in množenje. Indukcija.
 
-√2 ni racionalen (dokaz s protislovjem).
+📌 CELA (ℤ) = {...,-2,-1,0,1,2,...}
+Odštevanje deluje.
 
-Kompleksna: polarni zapis z = r(cosφ + i sinφ)
+📌 RACIONALNA (ℚ) = {a/b : a,b∈ℤ, b≠0}
+Ulomki. √2 NI racionalen (dokaz s protislovjem).
+
+📌 REALNA (ℝ)
+Vse točke na premici. Supremum, infimum.
+Dedekindov aksiom: vsaka neprazna navzgor omejena množica ima supremum.
+
+📌 KOMPLEKSNA (ℂ) = {a+ib : i²=-1}
+Polarni zapis: z = r(cosφ + i sinφ)
 de Moivre: (cosφ + i sinφ)ⁿ = cos(nφ) + i sin(nφ)`,
             exercises: [
-                { q: 'Dokaži, da √2 ni racionalen.', correct: 'm/n okrajšan, m²=2n² → m sod, n sod → protislovje', answer_display: 'Dokaz', steps: 'Predpostavi √2=m/n okrajšan. Kvadriraj: m²=2n² → m sod (2k) → 4k²=2n² → 2k²=n² → n sod. Protislovje.' }
+                { q: 'Dokaži z indukcijo: 1+2+...+n = n(n+1)/2', correct: 'baza n=1:1=1·2/2', answer_display: 'Dokaz', steps: 'Baza n=1: 1=1·2/2. Korak: predpostavimo za n, dodamo n+1.' },
+                { q: 'Dokaži, da √2 ni racionalen.', correct: 'm/n okrajšan, m²=2n² → m sod, n sod → protislovje', answer_display: 'Dokaz s protislovjem', steps: 'Predpostavi √2=m/n okrajšan. Kvadriraj: m²=2n² → m sod (2k) → 4k²=2n² → 2k²=n² → n sod. Protislovje.' }
             ],
             quiz: [
                 { q: 'Kaj je i²?', options: ['1', '-1', 'i'], correct: 1 },
-                { q: 'Katera števila so v ℝ, niso pa v ℚ?', options: ['Cela', 'Racionalna', 'Iracionalna'], correct: 2 }
+                { q: 'Katera množica je podmnožica realnih števil?', options: ['ℚ', 'ℤ', 'Oboje'], correct: 2 }
             ],
             ustna: [
-                { q: 'Zakaj √2 ni racionalen?', a: 'Dokaz s protislovjem – predpostavka vodi do tega, da sta števec in imenovalec soda.' },
-                { q: 'Kaj je polarni zapis kompleksnega števila?', a: 'z = r(cosφ + i sinφ), kjer je r = |z| in φ argument.' }
+                { q: 'Zakaj √2 ni racionalen?', a: 'Dokaz s protislovjem – če bi bil, bi lahko okrajšali ulomek, a bi bila oba števca soda.' },
+                { q: 'Kaj je supremum?', a: 'Natančna zgornja meja – najmanjše število, ki je večje ali enako vsem elementom množice.' }
             ],
-            notes: 'ℕ, ℤ, ℚ, ℝ, ℂ. √2 iracionalen. Polarni zapis, de Moivre.'
+            notes: 'ℕ, ℤ, ℚ, ℝ, ℂ. √2 ni racionalen. Supremum = najmanjša zgornja meja. Polarni zapis, de Moivre.'
+        },
+        zaporedja: {
+            name: '📈 Zaporedja',
+            theory: `==================== ZAPOREDJA ====================
+
+📌 DEFINICIJA
+Zaporedje je funkcija a: ℕ → ℝ.
+
+📌 MONOTONOST
+Naraščajoče: aₙ ≤ aₙ₊₁
+Padajoče: aₙ ≥ aₙ₊₁
+
+📌 OMEJENOST
+Navzgor omejeno: ∃M: aₙ ≤ M
+Navzdol omejeno: ∃m: aₙ ≥ m
+
+📌 LIMITA (ε‑N)
+lim aₙ = L, če ∀ε>0 ∃n₀: ∀n≥n₀, |aₙ−L| < ε
+
+📌 IZREK: vsako monotono in omejeno zaporedje je konvergentno.
+
+📌 CAUCHY: ∀ε>0 ∃n₀: ∀m,n≥n₀, |aₘ−aₙ| < ε`,
+            exercises: [
+                { q: 'Dokaži lim 1/n = 0', correct: 'za ε>0 izberi n₀ > 1/ε', answer_display: 'Dokaz', steps: 'Za dan ε>0 izberemo n₀ > 1/ε. Potem za n≥n₀: |1/n-0| = 1/n < ε.' },
+                { q: 'Izračunaj lim (1+1/n)ⁿ', correct: 'e', answer_display: 'e ≈ 2.718', steps: 'To je definicija Eulerjevega števila e.' }
+            ],
+            quiz: [
+                { q: 'Če je zaporedje monotono in omejeno, potem:', options: ['Divergira', 'Konvergira', 'Nihajoče'], correct: 1 },
+                { q: 'lim 1/n = ?', options: ['0', '1', '∞'], correct: 0 }
+            ],
+            ustna: [
+                { q: 'Kaj je limita zaporedja?', a: 'Število L, če so vsi členi od nekje naprej poljubno blizu L.' },
+                { q: 'Kaj je Cauchyjevo zaporedje?', a: 'Zaporedje, kjer se členi poljubno blizu, ko gresta indeksa v neskončnost.' }
+            ],
+            notes: 'Monotono + omejeno = konvergentno. Limita ε-N. Cauchy = konvergentno v ℝ.'
+        },
+        vrste: {
+            name: '📊 Vrste',
+            theory: `==================== VRSTE ====================
+
+📌 DEFINICIJA
+Vrsta ∑aₙ = a₁ + a₂ + a₃ + ...
+Delna vsota Sₙ = a₁+...+aₙ
+
+📌 GEOMETRIJSKA VRSTA
+∑qⁿ konvergira (k 1/(1−q)) če |q|<1, divergira če |q|≥1.
+
+📌 HARMONIČNA VRSTA
+∑1/n divergira (čeprav členi →0).
+
+📌 PRIMERJALNI KRITERIJ
+0≤aₙ≤bₙ, ∑bₙ konv ⇒ ∑aₙ konv.
+
+📌 KVOCIENTNI (D'ALEMBERT)
+lim |aₙ₊₁/aₙ| = D. D<1 ⇒ konv, D>1 ⇒ div, D=1 ne vemo.
+
+📌 KORENSKI (CAUCHY)
+lim sup (|aₙ|)^(1/n) = C. C<1 ⇒ konv, C>1 ⇒ div.
+
+📌 LEIBNIZ (alternirajoče)
+∑(-1)ⁿbₙ z bₙ padajoče proti 0 ⇒ konvergira.`,
+            exercises: [
+                { q: 'Ali ∑ (1/2)ⁿ konvergira?', correct: 'da', answer_display: 'Da, vsota = 2', steps: 'Geometrijska vrsta z q=1/2 < 1, vsota = 1/(1-1/2)=2.' },
+                { q: 'Ali ∑ 1/n konvergira?', correct: 'ne', answer_display: 'Ne, divergira', steps: 'Harmonična vrsta divergira (dokaz z združevanjem).' }
+            ],
+            quiz: [
+                { q: 'Geometrijska vrsta konvergira, ko je |q|', options: ['<1', '>1', '=1'], correct: 0 },
+                { q: 'Harmonična vrsta:', options: ['Konvergira', 'Divergira', 'Konvergira k 1'], correct: 1 }
+            ],
+            ustna: [
+                { q: 'Kaj je geometrijska vrsta?', a: 'Vrsta oblike ∑qⁿ. Konvergira če |q|<1.' },
+                { q: 'Kaj pravi Leibnizov kriterij?', a: 'Alternirajoča vrsta z padajočimi členi proti 0 konvergira.' }
+            ],
+            notes: 'Geometrijska: |q|<1 → 1/(1−q). Harmonična divergira. Kvocientni, korenski, Leibniz.'
+        },
+        funkcije: {
+            name: '📌 Funkcije',
+            theory: `==================== FUNKCIJE ====================
+
+📌 DEFINICIJA
+f: D→R, vsakemu x∈D priredi točno eno vrednost f(x).
+
+📌 INJEKTIVNA
+x₁≠x₂ ⇒ f(x₁)≠f(x₂)
+
+📌 SURJEKTIVNA
+∀y∈Rf ∃x: f(x)=y
+
+📌 KOMPOZITUM
+(f∘g)(x) = f(g(x))
+
+📌 INVERZ
+f⁻¹(y)=x ⇔ f(x)=y
+
+📌 LIMITA FUNKCIJE (ε‑δ)
+lim_{x→a} f(x)=L, če ∀ε>0 ∃δ>0: 0<|x-a|<δ ⇒ |f(x)-L|<ε
+
+📌 ZVEZNOST
+f je zvezna v a, če lim_{x→a} f(x)=f(a)`,
+            exercises: [
+                { q: 'Ali je f(x)=x² injektivna?', correct: 'ne', answer_display: 'Ne', steps: 'f(2)=4, f(-2)=4.' },
+                { q: 'Ali je f(x)=2x+1 injektivna?', correct: 'da', answer_display: 'Da', steps: 'Če 2x₁+1=2x₂+1 → x₁=x₂.' }
+            ],
+            quiz: [
+                { q: 'Kaj pomeni injektivna?', options: ['Različni x-ji dajo različne y-je', 'Vsak y je dosežen', 'Oboje'], correct: 0 },
+                { q: 'Kdaj je funkcija zvezna?', options: ['Ko limita = vrednost', 'Ko ima odvod', 'Ko je definirana'], correct: 0 }
+            ],
+            ustna: [
+                { q: 'Kaj je injektivna funkcija?', a: 'Različni elementi domene gredo v različne elemente kodomene.' },
+                { q: 'Kaj je kompozitum funkcij?', a: 'f∘g pomeni najprej g, potem f.' }
+            ],
+            notes: 'Injektivna, surjektivna, bijektivna. Kompozitum, inverz. Limita ε-δ, zveznost.'
+        },
+        odvodi: {
+            name: '⚡ Odvodi',
+            theory: `==================== ODVODI ====================
+
+📌 DEFINICIJA
+f'(a) = lim_{h→0} (f(a+h)−f(a))/h
+
+📌 PRAVILA:
+(f±g)' = f' ± g'
+(fg)' = f'g + fg'
+(f/g)' = (f'g − fg')/g²
+(f∘g)' = f'(g)·g' (verižno)
+
+📌 IZREKI:
+Rolle: f(a)=f(b) ⇒ ∃c: f'(c)=0
+Lagrange: f(b)−f(a)=f'(c)(b−a)
+
+📌 L'HOSPITAL:
+Če je lim f/g = 0/0 ali ∞/∞, potem lim f/g = lim f'/g'`,
+            exercises: [
+                { q: 'Odvod f(x)=x² je?', correct: '2x', answer_display: '2x', steps: 'f'(x)=2x^(2-1)=2x.' },
+                { q: 'Odvod f(x)=sin x je?', correct: 'cos x', answer_display: 'cos x', steps: 'Odvod sinusa je kosinus.' }
+            ],
+            quiz: [
+                { q: 'Odvod konstante je:', options: ['0', '1', 'konstanta'], correct: 0 },
+                { q: "L'Hospital pravilo uporabimo pri limitah tipa:", options: ['0/0 ali ∞/∞', '1/0', '0/∞'], correct: 0 }
+            ],
+            ustna: [
+                { q: 'Kaj je odvod?', a: 'Hitrost spremembe funkcije, geometrijsko strmina tangente.' },
+                { q: 'Kaj pravi Lagrangeov izrek?', a: 'Obstaja točka, kjer je odvod enak povprečni spremembi.' }
+            ],
+            notes: 'Odvod = lim diferenčnega kvocienta. Pravila: produkt, kvocient, verižno. Rolle, Lagrange, L\'Hospital.'
+        },
+        integrali: {
+            name: '∫ Integrali',
+            theory: `==================== INTEGRALI ====================
+
+📌 NEDOLOČENI INTEGRAL
+∫ f(x)dx = F(x) + C, kjer je F' = f
+
+📌 DOLOČENI INTEGRAL (RIEMANN)
+∫ₐᵇ f(x)dx = ploščina pod krivuljo
+
+📌 OSNOVNI IZREK (FTC)
+∫ₐᵇ f(x)dx = F(b) − F(a)
+
+📌 SUBSTITUCIJA
+∫ f(g(x))g'(x)dx = ∫ f(u)du
+
+📌 PER PARTES
+∫ u dv = uv − ∫ v du
+
+📌 UPORABA:
+Ploščina med grafoma: ∫ (g−f)dx
+Prostornina vrtenine: V = π∫ (f(x))²dx`,
+            exercises: [
+                { q: '∫ x² dx = ?', correct: 'x³/3', answer_display: 'x³/3 + C', steps: '∫ xⁿ dx = xⁿ⁺¹/(n+1), n=2 → x³/3.' },
+                { q: '∫₀¹ x dx = ?', correct: '1/2', answer_display: '1/2', steps: '∫ x dx = x²/2, od 0 do 1 = 1/2.' }
+            ],
+            quiz: [
+                { q: '∫ 1/x dx = ?', options: ['ln|x| + C', 'x + C', 'eˣ + C'], correct: 0 },
+                { q: 'FTC povezuje:', options: ['Odvod in integral', 'Limito in zaporedje', 'Vrsto in funkcijo'], correct: 0 }
+            ],
+            ustna: [
+                { q: 'Kaj je nedoločeni integral?', a: 'Družina funkcij, katerih odvod je podana funkcija.' },
+                { q: 'Kaj pravi osnovni izrek integralskega računa?', a: 'Določeni integral je razlika nedoločenega integrala v mejah.' }
+            ],
+            notes: '∫ f = F + C. FTC: ∫ₐᵇ f = F(b)−F(a). Substitucija, per partes, ploščina, prostornina.'
+        },
+        taylor: {
+            name: '📜 Taylor',
+            theory: `==================== TAYLOR ====================
+
+📌 TAYLORJEV POLINOM
+Tₙ(x) = f(a) + f'(a)(x−a) + f''(a)/2! (x−a)² + ... + f⁽ⁿ⁾(a)/n! (x−a)ⁿ
+
+📌 OSTANEK (LAGRANGE)
+Rₙ(x) = f⁽ⁿ⁺¹⁾(ξ)/(n+1)! (x−a)ⁿ⁺¹, ξ med a in x
+
+📌 RAZVOJI (MACLAURIN – okoli 0):
+eˣ = ∑ xⁿ/n! = 1 + x + x²/2! + x³/3! + ...
+sin x = ∑ (-1)ⁿ x²ⁿ⁺¹/(2n+1)! = x − x³/3! + x⁵/5! − ...
+cos x = ∑ (-1)ⁿ x²ⁿ/(2n)! = 1 − x²/2! + x⁴/4! − ...
+ln(1+x) = ∑ (-1)ⁿ⁺¹ xⁿ/n = x − x²/2 + x³/3 − ... (|x|<1)
+arctan x = ∑ (-1)ⁿ x²ⁿ⁺¹/(2n+1) = x − x³/3 + x⁵/5 − ... (|x|≤1)`,
+            exercises: [
+                { q: 'Taylorjev polinom 3. stopnje za eˣ okoli 0?', correct: '1 + x + x²/2! + x³/3!', answer_display: '1 + x + x²/2 + x³/6', steps: 'f(0)=1, f'(0)=1, f''(0)=1, f'''(0)=1.' },
+                { q: 'Prvi dva člena razvoja sin x okoli 0?', correct: 'x - x³/6', answer_display: 'x - x³/6', steps: 'sin x = x − x³/3! + ...' }
+            ],
+            quiz: [
+                { q: 'Taylorjev polinom 1. stopnje za f(x) okoli a je:', options: ['f(a)', 'f(a)+f\'(a)(x-a)', 'f\'(a)'], correct: 1 },
+                { q: 'Razvoj eˣ okoli 0 začne z:', options: ['1 + x', 'x + x²', '1'], correct: 0 }
+            ],
+            ustna: [
+                { q: 'Kaj je Taylorjev polinom?', a: 'Polinom, ki v neki točki aproksimira funkcijo in se z njo ujema v odvodih.' },
+                { q: 'Kaj je ostanek pri Taylorju?', a: 'Napaka, ko funkcijo aproksimiramo s polinomom.' }
+            ],
+            notes: 'Tₙ(x) = ∑ f⁽ᵏ⁾(a)/k! (x−a)ᵏ. Razvoji: eˣ, sin x, cos x, ln(1+x), arctan x.'
         }
     };
 
@@ -269,6 +506,10 @@ de Moivre: (cosφ + i sinφ)ⁿ = cos(nφ) + i sin(nφ)`,
             if (!completedTopics.includes(topicId)) {
                 completedTopics.push(topicId);
                 localStorage.setItem('math_completedTopics', JSON.stringify(completedTopics));
+                isCompleted = true;
+                const btn = document.getElementById('completeBtn');
+                if (btn) btn.disabled = true;
+                alert(`🎉 Opravili ste temo ${topic.name}!`);
             }
         }
 
@@ -319,7 +560,7 @@ de Moivre: (cosφ + i sinφ)ⁿ = cos(nφ) + i sin(nφ)`,
                 ${quizHtml}
                 <button onclick="submitQuiz()">Oddaj kviz</button>
                 <div id="quiz-result"></div>
-                <h2>🎤 Ustni izpit</h2>
+                <h2>🎤 Ustni izpit – vprašanja</h2>
                 ${ustnaHtml}
                 ${!isCompleted ? `<button class="complete-btn" id="completeBtn" onclick="completeTopic()" disabled>🔒 Najprej opravi kviz</button>` : `<button class="complete-btn" disabled>✅ Tema opravljena</button>`}
                 <div class="notes"><strong>📝 Zapiski za papir:</strong><br>${topic.notes}</div>
@@ -333,13 +574,13 @@ de Moivre: (cosφ + i sinφ)ⁿ = cos(nφ) + i sin(nφ)`,
             const correct = ex.correct.toLowerCase();
             const isCorrect = answer === correct || correct.includes(answer) || answer.includes(correct);
             const fb = document.getElementById(`feedback-${idx}`);
-            const steps = document.getElementById(`steps-${idx}`);
+            const stepsDiv = document.getElementById(`steps-${idx}`);
             fb.className = `feedback ${isCorrect ? 'correct' : 'wrong'}`;
             fb.innerHTML = isCorrect ? '✅ Pravilno!' : `❌ Napačno. Pravilen odgovor: ${ex.answer_display}`;
             if (!isCorrect) {
-                steps.innerHTML = `<strong>📖 Postopek:</strong><br>${ex.steps}`;
-                steps.style.display = 'block';
-            } else steps.style.display = 'none';
+                stepsDiv.innerHTML = `<strong>📖 Pravilen postopek:</strong><br>${ex.steps}`;
+                stepsDiv.style.display = 'block';
+            } else stepsDiv.style.display = 'none';
             fb.style.display = 'block';
         };
 
@@ -358,26 +599,20 @@ de Moivre: (cosφ + i sinφ)ⁿ = cos(nφ) + i sin(nφ)`,
             const passed = score >= total - 1;
             const resultDiv = document.getElementById('quiz-result');
             if (passed) {
-                resultDiv.innerHTML = `<div class="message" style="background:#d4edda;">✅ Rezultat: ${score}/${total} – Kviz opravljen!</div>`;
+                resultDiv.innerHTML = `<div class="message" style="background:#d4edda;">✅ Rezultat: ${score}/${total} – Kviz opravljen! Sedaj lahko zakleneš temo.</div>`;
                 document.getElementById('completeBtn').disabled = false;
                 quizPassed = true;
             } else {
-                resultDiv.innerHTML = `<div class="message" style="background:#f8d7da;">❌ Rezultat: ${score}/${total} – Potrebuješ vsaj ${total-1}/${total}.</div>`;
+                resultDiv.innerHTML = `<div class="message" style="background:#f8d7da;">❌ Rezultat: ${score}/${total} – Potrebuješ vsaj ${total-1}/${total}. Poskusi znova.</div>`;
             }
         };
 
         window.completeTopic = function() {
             if (!quizPassed && !isCompleted) {
-                alert('Najprej moraš opraviti kviz!');
+                alert('Najprej moraš uspešno opraviti kviz!');
                 return;
             }
-            if (!isCompleted) {
-                saveCompletion();
-                isCompleted = true;
-                document.getElementById('completeBtn').disabled = true;
-                document.getElementById('completeBtn').textContent = '✅ Tema opravljena';
-                alert(`🎉 Opravili ste temo ${topic.name}!`);
-            }
+            if (!isCompleted) saveCompletion();
         };
 
         render();
