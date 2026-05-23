@@ -1,1 +1,448 @@
 
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>Matematika 1 – Dnevi</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            background: #f0f0eb;
+            color: #1a2a1a;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #0a2f1f;
+            border-bottom: 3px solid #0a2f1f;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .back-btn {
+            background: #0a2f1f;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            margin-bottom: 1.5rem;
+        }
+        /* Day navigation */
+        .day-nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .day-btn {
+            background: #e8e8e0;
+            border: 1px solid #ccc;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        .day-btn.completed {
+            background: #0a2f1f;
+            color: white;
+            border-color: #0a2f1f;
+        }
+        .day-btn.locked {
+            background: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+        .day-btn.active {
+            background: #c7a03b;
+            color: #1a2a1a;
+            border-color: #c7a03b;
+        }
+        /* Content */
+        .theory {
+            background: #f9f9f5;
+            padding: 1.5rem;
+            border-left: 4px solid #0a2f1f;
+            margin: 1rem 0;
+            white-space: pre-line;
+        }
+        .exercise {
+            background: #fef9e6;
+            padding: 1rem;
+            margin: 1rem 0;
+            border: 1px solid #eee0b0;
+            border-radius: 0.3rem;
+        }
+        .answer-input {
+            width: 100%;
+            padding: 0.5rem;
+            font-family: monospace;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 0.3rem;
+            margin: 0.5rem 0;
+        }
+        .feedback {
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            display: none;
+        }
+        .feedback.correct { background: #d4edda; color: #155724; border-left: 4px solid #28a745; }
+        .feedback.wrong { background: #f8d7da; color: #721c24; border-left: 4px solid #dc3545; }
+        .step-solution {
+            display: none;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            background: #e8f0e8;
+            border-radius: 0.3rem;
+            font-size: 0.9rem;
+        }
+        button {
+            background: #0a2f1f;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+        .quiz-question {
+            background: #f0f0f0;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.3rem;
+        }
+        .quiz-option {
+            display: block;
+            margin: 0.3rem 0;
+        }
+        .complete-btn {
+            background: #0a2f1f;
+            color: white;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-size: 1rem;
+            width: 100%;
+            margin-top: 2rem;
+        }
+        .complete-btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+        .message {
+            background: #c7a03b;
+            color: #1a2a1a;
+            padding: 0.8rem;
+            text-align: center;
+            border-radius: 0.3rem;
+            margin-top: 1rem;
+        }
+        .notes {
+            background: #e8f0e8;
+            padding: 1rem;
+            border-radius: 0.3rem;
+            margin-top: 1rem;
+            white-space: pre-line;
+        }
+        hr { margin: 1.5rem 0; border-color: #ddd; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button class="back-btn" onclick="location.href='index.html'">← Nazaj na predmete</button>
+    <h1>📐 Matematika 1</h1>
+
+    <div class="day-nav" id="dayNav"></div>
+    <div id="dayContent"></div>
+</div>
+
+<script>
+    // ==================== PODATKI ZA VSE DNEVE ====================
+    const daysData = {
+        1: {
+            title: 'Day 1: Množice (osnove, ∈, ⊂, ∅, ∪, ∩, \\)',
+            theory: `==================== MNOŽICE ====================
+
+📌 KAJ JE MNOŽICA?
+Množica je zbirka različnih stvari. Tem stvarem rečemo ELEMENTI.
+Primer: A = {1, 2, 3}
+
+🔤 POMEN SIMBOLOV:
+∈ = "je element" → 2 ∈ {1,2,3}
+∉ = "ni element" → 5 ∉ {1,2,3}
+⊂ = "je podmnožica" → {2} ⊂ {1,2,3}
+∅ = prazna množica
+
+🔗 OPERACIJE:
+A ∪ B = unija (vse v A ali B)
+A ∩ B = presek (skupni elementi)
+A \\ B = razlika (v A, ni pa v B)
+A^c = komplement (vse razen A)
+
+==================== INTERVALI ====================
+[2,5] = zaprt (vključno 2 in 5)
+(2,5) = odprt (brez 2 in 5)
+(2,∞) = vsa števila večja od 2
+(-∞,2] = vsa števila manjša ali enaka 2
+
+==================== NEENAČBE ====================
+Linearna: 2x+3 > 7 → x > 2 → (2,∞)
+Kvadratna: x²-4 < 0 → -2 < x < 2 → (-2,2)
+Absolutna: |x-2| < 5 → -3 < x < 7 → (-3,7)`,
+            exercises: [
+                { q: 'A = {1,2,3}, B = {3,4,5}. A ∪ B = ?', correct: '{1,2,3,4,5}', answer_display: '{1,2,3,4,5}', steps: 'Unija = vse kar je v A ali B. Elementi: 1,2,3 iz A, 3,4,5 iz B → {1,2,3,4,5}' },
+                { q: 'A = {1,2,3}, B = {3,4,5}. A ∩ B = ?', correct: '{3}', answer_display: '{3}', steps: 'Presek = skupni elementi. Samo 3 je v obeh.' },
+                { q: 'Reši: 2x + 1 > 5', correct: 'x>2', answer_display: 'x > 2 ali (2, ∞)', steps: '2x > 4 → x > 2' }
+            ],
+            quiz: [
+                { q: 'Kaj pomeni ∈?', options: ['Je podmnožica', 'Je element', 'Unija'], correct: 1 },
+                { q: 'A∩B = ? (A={1,2,3}, B={3,4,5})', options: ['{1,2,3,4,5}', '{3}', '{1,2}'], correct: 1 },
+                { q: 'Reši: x > 3', options: ['(-∞,3)', '(3,∞)', '[3,∞)'], correct: 1 }
+            ],
+            notes: 'Množice: ∈ (element), ⊂ (podmnožica), ∅ (prazna), ∪ (unija), ∩ (presek). Intervali: [a,b] zaprt, (a,b) odprt.'
+        },
+        2: {
+            title: 'Day 2: Izjave in logika (∧, ∨, ⇒, ⇔, ¬, ∀, ∃)',
+            theory: `==================== IZJAVE IN LOGIKA ====================
+
+📌 KAJ JE IZJAVA?
+Izjava je trditev, ki je lahko PRAVILNA (P) ali NAPAČNA (N).
+
+🔗 LOGIČNI VEZNIKI:
+P ∧ Q = P in Q (resnično le, če sta obe resnični)
+P ∨ Q = P ali Q (resnično, če je vsaj ena resnična)
+P ⇒ Q = če P potem Q (napačno le, če je P resničen in Q napačen)
+P ⇔ Q = P natanko tedaj ko Q (resnično, ko sta enaki)
+¬P = negacija (nasprotje)
+
+⚠️ POMEMBNO: P ⇒ Q je resničen tudi, ko je P napačen!
+
+🔍 KVANTIFIKATORJA:
+∀ = za vsak
+∃ = obstaja
+
+📜 NEGACIJE:
+¬(∀x P(x)) = ∃x ¬P(x)
+¬(∃x P(x)) = ∀x ¬P(x)
+¬(P ⇒ Q) = P ∧ ¬Q`,
+            exercises: [
+                { q: 'P: 2+2=4 (P), Q: 3+3=7 (N). P ∧ Q = ?', correct: 'N', answer_display: 'N (napačno)', steps: 'Konjunkcija (∧) je resnična le, če sta obe resnični. Q je napačna → P∧Q napačna.' },
+                { q: 'P: 2+2=4 (P), Q: 3+3=7 (N). P ∨ Q = ?', correct: 'P', answer_display: 'P (pravilno)', steps: 'Disjunkcija (∨) je resnična, če je vsaj ena resnična. P je resnična.' },
+                { q: 'Negacija ∀x∈ℝ: x>0', correct: '∃x∈ℝ: x≤0', answer_display: '∃x∈ℝ: x≤0', steps: '¬(∀x P(x)) = ∃x ¬P(x). ¬(x>0) je x≤0.' }
+            ],
+            quiz: [
+                { q: 'P: 2+2=4, Q: 3+3=6. P ∧ Q = ?', options: ['P', 'N', 'Ni izjava'], correct: 0 },
+                { q: 'Negacija ∃x: P(x) je:', options: ['∃x: ¬P(x)', '∀x: ¬P(x)', '∀x: P(x)'], correct: 1 },
+                { q: 'P ⇔ Q je resnična, kadar:', options: ['P in Q različni', 'P in Q enaki', 'P resnična'], correct: 1 }
+            ],
+            notes: 'Izjava = P ali N. ∧ (in), ∨ (ali), ⇒ (če-potem), ⇔ (natanko tedaj), ¬ (ne). ∀ (za vsak), ∃ (obstaja).'
+        }
+        // Day 3–16 bomo dodajali postopoma
+    };
+
+    // Dodaj placeholder za dneve 3–16
+    for (let i = 3; i <= 16; i++) {
+        daysData[i] = {
+            title: `Day ${i}: (v pripravi)`,
+            theory: `Vsebina za dan ${i} bo dodana kmalu.`,
+            exercises: [],
+            quiz: [],
+            notes: ''
+        };
+    }
+
+    // ==================== NAPREDEK ====================
+    let completedDays = JSON.parse(localStorage.getItem('math_completedDays') || '[]');
+    let currentDay = parseInt(localStorage.getItem('math_currentDay') || '1');
+
+    function saveProgress() {
+        localStorage.setItem('math_completedDays', JSON.stringify(completedDays));
+        localStorage.setItem('math_currentDay', currentDay);
+    }
+
+    function isDayCompleted(day) {
+        return completedDays.includes(day);
+    }
+
+    function isDayUnlocked(day) {
+        if (day === 1) return true;
+        return isDayCompleted(day - 1);
+    }
+
+    function markDayCompleted(day) {
+        if (!completedDays.includes(day)) {
+            completedDays.push(day);
+            saveProgress();
+            renderDayNav();
+            alert(`🎉 Dan ${day} opravljen! Dan ${day+1} je odklenjen.`);
+            if (day + 1 <= 16) {
+                currentDay = day + 1;
+                saveProgress();
+                renderDayNav();
+                renderDayContent(currentDay);
+            }
+        }
+    }
+
+    // ==================== RENDER DNEVNA NAVIGACIJA ====================
+    function renderDayNav() {
+        const nav = document.getElementById('dayNav');
+        nav.innerHTML = '';
+        for (let i = 1; i <= 16; i++) {
+            const btn = document.createElement('button');
+            btn.textContent = `Dan ${i}`;
+            btn.className = 'day-btn';
+            if (isDayCompleted(i)) btn.classList.add('completed');
+            else if (!isDayUnlocked(i)) btn.classList.add('locked');
+            if (currentDay === i) btn.classList.add('active');
+            btn.onclick = () => {
+                if (isDayUnlocked(i)) {
+                    currentDay = i;
+                    saveProgress();
+                    renderDayNav();
+                    renderDayContent(i);
+                } else {
+                    alert(`Dan ${i} je zaklenjen. Najprej opravi dan ${i-1}.`);
+                }
+            };
+            nav.appendChild(btn);
+        }
+    }
+
+    // ==================== RENDER VSEBINE DNEVA ====================
+    function renderDayContent(day) {
+        const dayData = daysData[day];
+        if (!dayData) return;
+
+        const completed = isDayCompleted(day);
+        const container = document.getElementById('dayContent');
+
+        let exercisesHtml = '';
+        dayData.exercises.forEach((ex, idx) => {
+            exercisesHtml += `
+                <div class="exercise" id="ex-${day}-${idx}">
+                    <p><strong>${idx+1}.</strong> ${ex.q}</p>
+                    <input type="text" class="answer-input" id="input-${day}-${idx}" placeholder="Vpiši odgovor...">
+                    <button onclick="checkAnswer(${day}, ${idx})">Preveri</button>
+                    <div class="feedback" id="feedback-${day}-${idx}"></div>
+                    <div class="step-solution" id="steps-${day}-${idx}"></div>
+                </div>
+            `;
+        });
+
+        let quizHtml = '';
+        dayData.quiz.forEach((q, idx) => {
+            quizHtml += `
+                <div class="quiz-question">
+                    <p><strong>${idx+1}.</strong> ${q.q}</p>
+            `;
+            q.options.forEach((opt, optIdx) => {
+                quizHtml += `<label class="quiz-option"><input type="radio" name="quiz_${day}_${idx}" value="${optIdx}"> ${opt}</label>`;
+            });
+            quizHtml += `</div>`;
+        });
+
+        container.innerHTML = `
+            <h2>${dayData.title}</h2>
+            <div class="theory">${dayData.theory}</div>
+            <h3>📝 Vaje</h3>
+            ${exercisesHtml || '<p>Vaje bodo dodane kmalu.</p>'}
+            <h3>📊 Kviz</h3>
+            ${quizHtml || '<p>Kviz bo dodan kmalu.</p>'}
+            <button onclick="submitQuiz(${day})">Oddaj kviz</button>
+            <div id="quiz-result-${day}"></div>
+            ${!completed ? `<button class="complete-btn" id="complete-btn-${day}" onclick="completeDay(${day})" disabled>🔒 Najprej opravi kviz</button>` : `<button class="complete-btn" disabled>✅ Dan opravljen</button>`}
+            <div class="notes"><strong>📝 Zapiski za papir:</strong><br>${dayData.notes || 'Zapiski bodo dodani.'}</div>
+        `;
+
+        // Če je dan že opravljen, onemogoči kviz gumbe? Ne, pustimo da lahko ponavlja.
+        if (completed) {
+            const btn = document.getElementById(`complete-btn-${day}`);
+            if (btn) btn.disabled = true;
+        }
+    }
+
+    // ==================== PREVERI ODGOVOR ====================
+    window.checkAnswer = function(day, idx) {
+        const input = document.getElementById(`input-${day}-${idx}`);
+        const answer = input.value.trim().toLowerCase();
+        const ex = daysData[day].exercises[idx];
+        const correct = ex.correct.toLowerCase();
+        const isCorrect = answer === correct || correct.includes(answer) || answer.includes(correct);
+
+        const feedbackDiv = document.getElementById(`feedback-${day}-${idx}`);
+        const stepsDiv = document.getElementById(`steps-${day}-${idx}`);
+
+        if (isCorrect) {
+            feedbackDiv.className = 'feedback correct';
+            feedbackDiv.innerHTML = '✅ Pravilno!';
+            stepsDiv.style.display = 'none';
+        } else {
+            feedbackDiv.className = 'feedback wrong';
+            feedbackDiv.innerHTML = `❌ Napačno. Pravilen odgovor: ${ex.answer_display}`;
+            stepsDiv.innerHTML = `<strong>📖 Pravilen postopek:</strong><br>${ex.steps}`;
+            stepsDiv.style.display = 'block';
+        }
+        feedbackDiv.style.display = 'block';
+    };
+
+    // ==================== KVIZ ====================
+    window.submitQuiz = function(day) {
+        const dayData = daysData[day];
+        if (!dayData.quiz.length) {
+            alert('Za ta dan še ni kviza.');
+            return;
+        }
+        let score = 0;
+        for (let i = 0; i < dayData.quiz.length; i++) {
+            const selected = document.querySelector(`input[name="quiz_${day}_${i}"]:checked`);
+            if (selected && parseInt(selected.value) === dayData.quiz[i].correct) {
+                score++;
+            }
+        }
+        const total = dayData.quiz.length;
+        const passed = score >= total - 1;
+        const resultDiv = document.getElementById(`quiz-result-${day}`);
+
+        if (passed) {
+            resultDiv.innerHTML = `<div class="message" style="background:#d4edda; color:#155724;">✅ Rezultat: ${score}/${total} – Kviz opravljen! Sedaj lahko zakleneš dan.</div>`;
+            const completeBtn = document.getElementById(`complete-btn-${day}`);
+            if (completeBtn) {
+                completeBtn.disabled = false;
+                completeBtn.textContent = '✅ Označi dan kot opravljen';
+            }
+        } else {
+            resultDiv.innerHTML = `<div class="message" style="background:#f8d7da; color:#721c24;">❌ Rezultat: ${score}/${total} – Potrebuješ vsaj ${total-1}/${total}. Poskusi znova.</div>`;
+        }
+    };
+
+    // ==================== ZAKLJUČI DAN ====================
+    window.completeDay = function(day) {
+        if (isDayCompleted(day)) {
+            alert('Ta dan je že opravljen!');
+            return;
+        }
+        markDayCompleted(day);
+    };
+
+    // ==================== INIT ====================
+    renderDayNav();
+    renderDayContent(currentDay);
+</script>
+</body>
+</html>
