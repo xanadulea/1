@@ -2,8 +2,13 @@
 <html lang="sl">
 <head>
     <meta charset="UTF-8">
-    <title>Študijski portal</title>
+    <title>Matematika 1 – Študijski portal</title>
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
         body {
             font-family: 'Georgia', 'Times New Roman', Times, serif;
             background: #f0f0eb;
@@ -11,46 +16,167 @@
             padding: 2rem;
         }
         .container {
-            max-width: 800px;
+            max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            padding: 2rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         h1 {
             color: #0a2f1f;
             border-bottom: 3px solid #0a2f1f;
             padding-bottom: 0.5rem;
+            margin-bottom: 2rem;
         }
-        .subject-card {
-            background: #e8f0e8;
+        /* Grid kvadratov */
+        .topics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .topic-card {
+            background: white;
+            border-radius: 1rem;
             padding: 1.5rem;
-            margin: 1rem 0;
-            border-radius: 0.5rem;
             cursor: pointer;
-            text-align: center;
-            border: 1px solid #ccc;
-            transition: 0.2s;
+            transition: all 0.2s;
+            border: 1px solid #ddd;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
         }
-        .subject-card:hover {
-            background: #d4e8d4;
-            transform: scale(1.01);
+        .topic-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: #0a2f1f;
         }
-        .subject-card h2 {
+        .topic-card.completed {
+            background: #e8f0e8;
+            border-left: 5px solid #0a2f1f;
+        }
+        .topic-card h3 {
             color: #0a2f1f;
             margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        .topic-card p {
+            color: #555;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .topic-status {
+            font-size: 0.8rem;
+            color: #0a2f1f;
+            font-weight: bold;
+        }
+        .progress-container {
+            background: #e0e0e0;
+            border-radius: 2rem;
+            height: 1.5rem;
+            margin: 1.5rem 0;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: #0a2f1f;
+            width: 0%;
+            height: 100%;
+            border-radius: 2rem;
+            color: white;
+            text-align: center;
+            line-height: 1.5rem;
+            font-size: 0.8rem;
+            transition: width 0.3s;
+        }
+        .reset-btn {
+            background: #c7a03b;
+            color: #1a2a1a;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 <div class="container">
-    <h1>📚 Študijski portal</h1>
-    <div class="subject-card" onclick="location.href='matematika1.html'">
-        <h2>📐 Matematika 1</h2>
-        <p>Od množic do Taylorja – 16 dni</p>
+    <h1>📐 Matematika 1</h1>
+
+    <div class="progress-container">
+        <div class="progress-fill" id="progressFill">0%</div>
     </div>
-    <!-- Več predmetov lahko dodaš kasneje -->
+
+    <div class="topics-grid" id="topicsGrid"></div>
+
+    <button class="reset-btn" onclick="resetAllProgress()">🔄 Ponastavi ves napredek</button>
 </div>
+
+<script>
+    // ==================== SEZNAM TEM ====================
+    const topics = [
+        { id: 'mnozice', name: '📦 Množice', desc: '∈, ⊂, ∅, ∪, ∩, \\, ×, relacije, preslikave, grupe', completed: false },
+        { id: 'izjave', name: '🧠 Izjave in logika', desc: '∧, ∨, ⇒, ⇔, ¬, ∀, ∃, resničnostne tabele', completed: false },
+        { id: 'stevila', name: '🔢 Števila', desc: 'N, Z, Q, R, C, absolutna vrednost, intervali', completed: false },
+        { id: 'zaporedja', name: '📈 Zaporedja', desc: 'Definicija, monotonost, omejenost, limita, Cauchy', completed: false },
+        { id: 'vrste', name: '📊 Vrste', desc: 'Geometrijska, harmonična, kriteriji, Leibniz', completed: false },
+        { id: 'funkcije', name: '📌 Funkcije', desc: 'Definicija, injektivnost, surjektivnost, kompozitum, inverz', completed: false },
+        { id: 'odvodi', name: '⚡ Odvodi', desc: 'Odvod, pravila, verižno, Rolle, Lagrange, L\'Hospital', completed: false },
+        { id: 'integrali', name: '∫ Integrali', desc: 'Nedoločeni, določeni, FTC, substitucija, per partes', completed: false },
+        { id: 'taylor', name: '📜 Taylor', desc: 'Taylorjev polinom, ostanek, razvoji', completed: false }
+    ];
+
+    // Load progress from localStorage
+    let completedTopics = JSON.parse(localStorage.getItem('math_completedTopics') || '[]');
+    topics.forEach(t => { t.completed = completedTopics.includes(t.id); });
+
+    function saveProgress() {
+        localStorage.setItem('math_completedTopics', JSON.stringify(completedTopics));
+        updateProgressBar();
+        renderTopicsGrid();
+    }
+
+    function updateProgressBar() {
+        const total = topics.length;
+        const completed = completedTopics.length;
+        const percent = Math.round((completed / total) * 100);
+        const fill = document.getElementById('progressFill');
+        if (fill) {
+            fill.style.width = `${percent}%`;
+            fill.textContent = `${percent}%`;
+        }
+    }
+
+    function markTopicCompleted(topicId) {
+        if (!completedTopics.includes(topicId)) {
+            completedTopics.push(topicId);
+            saveProgress();
+        }
+    }
+
+    function renderTopicsGrid() {
+        const grid = document.getElementById('topicsGrid');
+        grid.innerHTML = '';
+        topics.forEach(topic => {
+            const card = document.createElement('div');
+            card.className = `topic-card ${topic.completed ? 'completed' : ''}`;
+            card.innerHTML = `
+                <h3>${topic.name}</h3>
+                <p>${topic.desc}</p>
+                <div class="topic-status">${topic.completed ? '✅ Opravljeno' : '📌 Ni še opravljeno'}</div>
+            `;
+            card.onclick = () => {
+                window.location.href = `topic.html?id=${topic.id}`;
+            };
+            grid.appendChild(card);
+        });
+    }
+
+    function resetAllProgress() {
+        if (confirm('Ponastaviti ves napredek? Vse opravljene teme bodo izgubljene.')) {
+            localStorage.removeItem('math_completedTopics');
+            completedTopics = [];
+            saveProgress();
+        }
+    }
+
+    renderTopicsGrid();
+    updateProgressBar();
+</script>
 </body>
 </html>
