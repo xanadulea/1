@@ -1,1 +1,55 @@
 
+<!DOCTYPE html>
+<html lang="sl">
+<head>
+    <meta charset="UTF-8">
+    <title>Matematika 1</title>
+    <style>
+        body {
+            font-family: 'Georgia', 'Times New Roman', Times, serif;
+            background: #f8f8f5;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+        }
+        h1 { color: #0a2f1f; }
+        .topic-card {
+            background: #e8f0e8;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            border: 1px solid #ccc;
+        }
+        .topic-card:hover { background: #d4e8d4; }
+        .completed { background: #c7e0c7; border-left: 5px solid #0a2f1f; }
+        button {
+            background: #0a2f1f;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 2rem;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>📚 Matematika 1</h1>
+    <p>Klikni na temo:</p>
+    {% for topic_id, topic in topics.items() %}
+    <div class="topic-card {% if topic_id in progress.completed_topics %}completed{% endif %}" onclick="location.href='/topic/{{ topic_id }}'">
+        <h3>{{ topic.name }}</h3>
+        <p>✅ Opravljeno: {% if topic_id in progress.completed_topics %}DA{% else %}NE{% endif %}</p>
+    </div>
+    {% endfor %}
+    <hr>
+    <button onclick="fetch('/api/reset',{method:'POST'}).then(()=>location.reload())">🔄 Ponastavi</button>
+</div>
+</body>
+</html>
