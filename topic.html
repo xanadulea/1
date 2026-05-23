@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <title>Matematika 1 – Tema</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Georgia', 'Times New Roman', Times, serif;
             background: #f0f0eb;
@@ -22,13 +18,8 @@
             background: white;
             padding: 2rem;
             border-radius: 0.5rem;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
-        h1, h2, h3 {
-            color: #0a2f1f;
-            margin-top: 1rem;
-            margin-bottom: 0.5rem;
-        }
+        h1, h2, h3 { color: #0a2f1f; margin-top: 1rem; }
         .back-btn {
             background: #0a2f1f;
             color: white;
@@ -75,7 +66,6 @@
             padding: 0.5rem;
             background: #e8f0e8;
             border-radius: 0.3rem;
-            font-size: 0.9rem;
         }
         button {
             background: #0a2f1f;
@@ -148,13 +138,12 @@
     </style>
 </head>
 <body>
-<div class="container" id="container">
-    <button class="back-btn" onclick="location.href='index.html'">← Nazaj na izbiro tem</button>
+<div class="container">
+    <button class="back-btn" onclick="location.href='index.html'">← Nazaj</button>
     <div id="content"></div>
 </div>
 
 <script>
-    // ==================== PODATKI ZA VSE TEME ====================
     const topicsData = {
         mnozice: {
             name: '📦 Množice',
@@ -174,7 +163,6 @@ Primer: A = {1, 2, 3}
 A ∪ B = unija (vse v A ali B)
 A ∩ B = presek (skupni elementi)
 A \\ B = razlika (v A, ni pa v B)
-A^c = komplement (vse razen A)
 
 📜 DE MORGAN:
 (A ∪ B)^c = A^c ∩ B^c
@@ -185,63 +173,46 @@ A × B = {(a,b) : a∈A, b∈B} → |A×B| = |A|·|B|
 
 ==================== RELACIJE ====================
 Relacija R na A je podmnožica A×A.
-Lastnosti: refleksivna, simetrična, tranzitivna, antisimetrična.
 Ekvivalenčna = refleksivna + simetrična + tranzitivna.
 
 ==================== PRESLIKAVE ====================
-f: A→B, vsak a gre v en b.
 Injektivna: različni a-ji → različni b-ji.
 Surjektivna: vsak b je dosežen.
-Bijektivna = injektivna + surjektivna.
 
 ==================== GRUPE ====================
-Množica G z operacijo *:
-1. Zaprtje: a*b ∈ G
-2. Asociativnost
-3. Nevtralni element e
-4. Inverz: a*a⁻¹ = e`,
+Množica z operacijo *: zaprtje, asociativnost, nevtralni element, inverz.`,
             exercises: [
                 { q: 'A = {1,2,3}, B = {3,4,5}. A ∪ B = ?', correct: '{1,2,3,4,5}', answer_display: '{1,2,3,4,5}', steps: 'Unija = vse kar je v A ali B.' },
-                { q: 'A = {1,2,3}, B = {3,4,5}. A ∩ B = ?', correct: '{3}', answer_display: '{3}', steps: 'Presek = skupni elementi.' },
-                { q: 'Ali je relacija "=" (enako) ekvivalenčna?', correct: 'da', answer_display: 'Da', steps: 'Refleksivna, simetrična, tranzitivna.' }
+                { q: 'A = {1,2,3}, B = {3,4,5}. A ∩ B = ?', correct: '{3}', answer_display: '{3}', steps: 'Presek = skupni elementi.' }
             ],
             quiz: [
                 { q: 'Kaj pomeni ∈?', options: ['Je podmnožica', 'Je element', 'Unija'], correct: 1 },
-                { q: 'A∩B = ? (A={1,2,3}, B={3,4,5})', options: ['{1,2,3,4,5}', '{3}', '{1,2}'], correct: 1 },
-                { q: 'Kaj je grupa?', options: ['Množica z nečim', 'Množica z asociativno operacijo, nevtralnim in inverzi', 'Samo množica'], correct: 1 }
+                { q: 'A∩B = ? (A={1,2,3}, B={3,4,5})', options: ['{1,2,3,4,5}', '{3}', '{1,2}'], correct: 1 }
             ],
             ustna: [
-                { q: 'Kaj je podmnožica?', a: 'Množica B je podmnožica A, če je vsak element iz B tudi v A. Oznaka: B ⊂ A.' },
-                { q: 'Naštej lastnosti ekvivalenčne relacije.', a: 'Refleksivnost, simetričnost, tranzitivnost.' },
-                { q: 'Kaj je grupa?', a: 'Množica z operacijo, ki je zaprta, asociativna, ima nevtralni element in vsak element ima inverz.' }
+                { q: 'Kaj je podmnožica?', a: 'Množica B je podmnožica A, če je vsak element iz B tudi v A.' },
+                { q: 'Naštej lastnosti ekvivalenčne relacije.', a: 'Refleksivnost, simetričnost, tranzitivnost.' }
             ],
-            notes: '∈ = element, ⊂ = podmnožica, ∅ = prazna, ∪ = unija, ∩ = presek, \\ = razlika, × = kartezični produkt.'
+            notes: '∈ = element, ⊂ = podmnožica, ∅ = prazna, ∪ = unija, ∩ = presek.'
         },
         izjave: {
             name: '🧠 Izjave in logika',
-            theory: `==================== IZJAVE IN LOGIKA ====================
+            theory: `==================== IZJAVE ====================
 
-📌 KAJ JE IZJAVA?
-Izjava je trditev, ki je lahko PRAVILNA (P) ali NAPAČNA (N).
-
-🔤 SIMBOLI:
-∧ = "in" (konjunkcija) – resnično le, če sta obe resnični
-∨ = "ali" (disjunkcija) – resnično, če je vsaj ena resnična
+📌 SIMBOLI:
+∧ = "in" (konjunkcija)
+∨ = "ali" (disjunkcija)
 ⇒ = "če-potem" (implikacija) – napačno le, če je P resničen in Q napačen
-⇔ = "natanko tedaj ko" (ekvivalenca) – resnično, ko sta enaki
-¬ = "ne" (negacija) – obrne vrednost
+⇔ = "natanko tedaj ko" (ekvivalenca)
+¬ = "ne" (negacija)
 
 ∀ = "za vsak" (univerzalni kvantifikator)
 ∃ = "obstaja" (eksistenčni kvantifikator)
 
-⚠️ POMEMBNO: P ⇒ Q je resničen tudi, ko je P napačen!
-
 📜 NEGACIJE:
 ¬(∀x P(x)) = ∃x ¬P(x)
-¬(∃x P(x)) = ∀x ¬P(x)
-¬(P ⇒ Q) = P ∧ ¬Q`,
+¬(∃x P(x)) = ∀x ¬P(x)`,
             exercises: [
-                { q: 'P: 2+2=4 (P), Q: 3+3=7 (N). P ∧ Q = ?', correct: 'N', answer_display: 'N (napačno)', steps: 'Konjunkcija (∧) je resnična le, če sta obe resnični.' },
                 { q: 'Negacija ∀x∈ℝ: x>0', correct: '∃x∈ℝ: x≤0', answer_display: '∃x∈ℝ: x≤0', steps: '¬(∀x P(x)) = ∃x ¬P(x).' }
             ],
             quiz: [
@@ -252,13 +223,37 @@ Izjava je trditev, ki je lahko PRAVILNA (P) ali NAPAČNA (N).
                 { q: 'Kdaj je implikacija P⇒Q napačna?', a: 'Samo ko je P resničen in Q napačen.' },
                 { q: 'Kako zanikamo ∀x P(x)?', a: '∃x ¬P(x).' }
             ],
-            notes: '∧ = in, ∨ = ali, ⇒ = če-potem, ⇔ = natanko tedaj ko, ¬ = ne. ∀ = za vsak, ∃ = obstaja.'
+            notes: '∧ = in, ∨ = ali, ⇒ = če-potem, ¬ = ne. ∀ = za vsak, ∃ = obstaja.'
+        },
+        stevila: {
+            name: '🔢 Števila',
+            theory: `==================== ŠTEVILA ====================
+
+ℕ = {1,2,3,...}
+ℤ = {...,-2,-1,0,1,2,...}
+ℚ = {a/b : a,b∈ℤ, b≠0}
+ℝ = realna števila (vse točke na premici)
+ℂ = {a+ib : i²=-1}
+
+√2 ni racionalen (dokaz s protislovjem).
+
+Kompleksna: polarni zapis z = r(cosφ + i sinφ)
+de Moivre: (cosφ + i sinφ)ⁿ = cos(nφ) + i sin(nφ)`,
+            exercises: [
+                { q: 'Dokaži, da √2 ni racionalen.', correct: 'm/n okrajšan, m²=2n² → m sod, n sod → protislovje', answer_display: 'Dokaz', steps: 'Predpostavi √2=m/n okrajšan. Kvadriraj: m²=2n² → m sod (2k) → 4k²=2n² → 2k²=n² → n sod. Protislovje.' }
+            ],
+            quiz: [
+                { q: 'Kaj je i²?', options: ['1', '-1', 'i'], correct: 1 },
+                { q: 'Katera števila so v ℝ, niso pa v ℚ?', options: ['Cela', 'Racionalna', 'Iracionalna'], correct: 2 }
+            ],
+            ustna: [
+                { q: 'Zakaj √2 ni racionalen?', a: 'Dokaz s protislovjem – predpostavka vodi do tega, da sta števec in imenovalec soda.' },
+                { q: 'Kaj je polarni zapis kompleksnega števila?', a: 'z = r(cosφ + i sinφ), kjer je r = |z| in φ argument.' }
+            ],
+            notes: 'ℕ, ℤ, ℚ, ℝ, ℂ. √2 iracionalen. Polarni zapis, de Moivre.'
         }
     };
 
-    // Add more topics (stevila, zaporedja, etc.) later
-
-    // Get topic from URL
     const urlParams = new URLSearchParams(window.location.search);
     const topicId = urlParams.get('id');
     const topic = topicsData[topicId];
@@ -266,7 +261,6 @@ Izjava je trditev, ki je lahko PRAVILNA (P) ali NAPAČNA (N).
     if (!topic) {
         document.getElementById('content').innerHTML = '<p>Tema ne obstaja.</p>';
     } else {
-        // Load progress
         let completedTopics = JSON.parse(localStorage.getItem('math_completedTopics') || '[]');
         let isCompleted = completedTopics.includes(topicId);
         let quizPassed = false;
@@ -282,7 +276,7 @@ Izjava je trditev, ki je lahko PRAVILNA (P) ali NAPAČNA (N).
             let exercisesHtml = '';
             topic.exercises.forEach((ex, idx) => {
                 exercisesHtml += `
-                    <div class="exercise" id="ex-${idx}">
+                    <div class="exercise">
                         <p><strong>${idx+1}.</strong> ${ex.q}</p>
                         <input type="text" class="answer-input" id="input-${idx}" placeholder="Vpiši odgovor...">
                         <button onclick="checkAnswer(${idx})">Preveri</button>
@@ -319,20 +313,15 @@ Izjava je trditev, ki je lahko PRAVILNA (P) ali NAPAČNA (N).
             content.innerHTML = `
                 <h1>${topic.name}</h1>
                 <div class="theory">${topic.theory}</div>
-
                 <h2>📝 Vaje</h2>
                 ${exercisesHtml}
-
                 <h2>📊 Kviz</h2>
                 ${quizHtml}
                 <button onclick="submitQuiz()">Oddaj kviz</button>
                 <div id="quiz-result"></div>
-
-                <h2>🎤 Ustni izpit – vprašanja</h2>
+                <h2>🎤 Ustni izpit</h2>
                 ${ustnaHtml}
-
                 ${!isCompleted ? `<button class="complete-btn" id="completeBtn" onclick="completeTopic()" disabled>🔒 Najprej opravi kviz</button>` : `<button class="complete-btn" disabled>✅ Tema opravljena</button>`}
-
                 <div class="notes"><strong>📝 Zapiski za papir:</strong><br>${topic.notes}</div>
             `;
         }
@@ -343,71 +332,51 @@ Izjava je trditev, ki je lahko PRAVILNA (P) ali NAPAČNA (N).
             const ex = topic.exercises[idx];
             const correct = ex.correct.toLowerCase();
             const isCorrect = answer === correct || correct.includes(answer) || answer.includes(correct);
-
-            const feedbackDiv = document.getElementById(`feedback-${idx}`);
-            const stepsDiv = document.getElementById(`steps-${idx}`);
-
-            if (isCorrect) {
-                feedbackDiv.className = 'feedback correct';
-                feedbackDiv.innerHTML = '✅ Pravilno!';
-                stepsDiv.style.display = 'none';
-            } else {
-                feedbackDiv.className = 'feedback wrong';
-                feedbackDiv.innerHTML = `❌ Napačno. Pravilen odgovor: ${ex.answer_display}`;
-                stepsDiv.innerHTML = `<strong>📖 Pravilen postopek:</strong><br>${ex.steps}`;
-                stepsDiv.style.display = 'block';
-            }
-            feedbackDiv.style.display = 'block';
+            const fb = document.getElementById(`feedback-${idx}`);
+            const steps = document.getElementById(`steps-${idx}`);
+            fb.className = `feedback ${isCorrect ? 'correct' : 'wrong'}`;
+            fb.innerHTML = isCorrect ? '✅ Pravilno!' : `❌ Napačno. Pravilen odgovor: ${ex.answer_display}`;
+            if (!isCorrect) {
+                steps.innerHTML = `<strong>📖 Postopek:</strong><br>${ex.steps}`;
+                steps.style.display = 'block';
+            } else steps.style.display = 'none';
+            fb.style.display = 'block';
         };
 
         window.toggleUstna = function(idx) {
             const div = document.getElementById(`ustna-${idx}`);
-            if (div.style.display === 'none' || div.style.display === '') {
-                div.style.display = 'block';
-            } else {
-                div.style.display = 'none';
-            }
+            div.style.display = div.style.display === 'block' ? 'none' : 'block';
         };
 
         window.submitQuiz = function() {
             let score = 0;
             for (let i = 0; i < topic.quiz.length; i++) {
                 const selected = document.querySelector(`input[name="quiz_${i}"]:checked`);
-                if (selected && parseInt(selected.value) === topic.quiz[i].correct) {
-                    score++;
-                }
+                if (selected && parseInt(selected.value) === topic.quiz[i].correct) score++;
             }
             const total = topic.quiz.length;
             const passed = score >= total - 1;
             const resultDiv = document.getElementById('quiz-result');
-
             if (passed) {
-                resultDiv.innerHTML = `<div class="message" style="background:#d4edda;">✅ Rezultat: ${score}/${total} – Kviz opravljen! Sedaj lahko zakleneš temo.</div>`;
-                const completeBtn = document.getElementById('completeBtn');
-                if (completeBtn) {
-                    completeBtn.disabled = false;
-                    completeBtn.textContent = '✅ Označi temo kot opravljeno';
-                }
+                resultDiv.innerHTML = `<div class="message" style="background:#d4edda;">✅ Rezultat: ${score}/${total} – Kviz opravljen!</div>`;
+                document.getElementById('completeBtn').disabled = false;
                 quizPassed = true;
             } else {
-                resultDiv.innerHTML = `<div class="message" style="background:#f8d7da;">❌ Rezultat: ${score}/${total} – Potrebuješ vsaj ${total-1}/${total}. Poskusi znova.</div>`;
+                resultDiv.innerHTML = `<div class="message" style="background:#f8d7da;">❌ Rezultat: ${score}/${total} – Potrebuješ vsaj ${total-1}/${total}.</div>`;
             }
         };
 
         window.completeTopic = function() {
             if (!quizPassed && !isCompleted) {
-                alert('Najprej moraš uspešno opraviti kviz!');
+                alert('Najprej moraš opraviti kviz!');
                 return;
             }
             if (!isCompleted) {
                 saveCompletion();
                 isCompleted = true;
-                const btn = document.getElementById('completeBtn');
-                if (btn) {
-                    btn.disabled = true;
-                    btn.textContent = '✅ Tema opravljena';
-                }
-                alert(`🎉 Čestitke! Opravili ste temo ${topic.name}!`);
+                document.getElementById('completeBtn').disabled = true;
+                document.getElementById('completeBtn').textContent = '✅ Tema opravljena';
+                alert(`🎉 Opravili ste temo ${topic.name}!`);
             }
         };
 
